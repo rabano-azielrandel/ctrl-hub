@@ -33,7 +33,7 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={() => console.log("hello")}
-      className="min-w-lg min-h-130 flex flex-col centerX p-10 gap-8
+      className="min-w-lg min-h-130 flex flex-col centerX p-10 gap-8 mt-16
         rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg"
     >
       <div className="flex flex-col items-center gap-2 text-center mb-6">
@@ -85,6 +85,12 @@ export default function LoginForm() {
       <Button className="hover:-translate-y-[2px] font-semibold">
         Sign in
       </Button>
+
+      <div className="w-full flex centerXY gap-2">
+        <div className="w-full h-0 border border-white/20" />
+        <p className="text-nowrap">or continue with</p>
+        <div className="w-full h-0 border border-white/20" />
+      </div>
 
       <Button variant="secondary">
         <Image src="/icons/google.png" alt="Google" width={18} height={18} />
