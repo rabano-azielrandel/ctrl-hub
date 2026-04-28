@@ -1,9 +1,9 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useState } from "react";
 import Image from "next/image";
 import Input from "../ui/Input";
+import Button from "../ui/Button";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -81,6 +81,15 @@ export default function LoginForm() {
           focus={focus === "password"}
         />
       </div>
+
+      <Button className="hover:-translate-y-[2px] font-semibold">
+        Sign in
+      </Button>
+
+      <Button variant="secondary">
+        <Image src="/icons/google.png" alt="Google" width={18} height={18} />
+        Continue with Google
+      </Button>
     </form>
   );
 }
