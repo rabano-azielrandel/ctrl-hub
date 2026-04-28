@@ -1,7 +1,9 @@
+import { Sidebar } from "@/component/panel/Sidebar";
+
 export default function Dashboard() {
   return (
-    <div>
-      <p>dashboard</p>
+    <div className="flex">
+      <Sidebar />
     </div>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Button from "../ui/Button";
 import { logout } from "@/app/actions/auth";
@@ -5,7 +7,7 @@ import { LogOut } from "lucide-react";
 
 export function Sidebar() {
   return (
-    <div className="flex flex-col min-w-lg max-w-lg">
+    <div className="sticky w-56 max-w-56 h-screen flex flex-col bg-amber-300">
       {/* Header */}
       <div className="w-full flex">
         <div className="w-20 p-2">
@@ -28,7 +30,7 @@ export function Sidebar() {
 
       {/* Logout */}
       <div className="w-full flex">
-        <Button variant="secondary" onClick={() => logout}>
+        <Button variant="secondary" onClick={() => logout()}>
           <LogOut />
           Logout
         </Button>
