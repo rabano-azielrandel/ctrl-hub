@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import { login } from "@/app/actions/auth";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -16,13 +17,7 @@ export default function LoginForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      await login({ email, password });
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -32,8 +27,8 @@ export default function LoginForm() {
 
   return (
     <form
-      onSubmit={() => console.log("hello")}
-      className="min-w-lg min-h-130 flex flex-col centerX p-10 gap-8 mt-16
+      onSubmit={handleSubmit}
+      className="min-w-lg max-w-xl min-h-130 flex flex-col centerX p-10 gap-8 mt-16
         rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg"
     >
       <div className="flex flex-col items-center gap-2 text-center mb-6">
@@ -82,8 +77,18 @@ export default function LoginForm() {
         />
       </div>
 
-      <Button className="hover:-translate-y-[2px] font-semibold">
-        Sign in
+      {error && (
+        <div className="w-full flex flex-col gap-1 ">
+          <p className="text-sm text-red-500 text-wrap">{error}</p>
+        </div>
+      )}
+
+      <Button
+        type="submit"
+        disabled={loading}
+        className="hover:-translate-y-[2px] font-semibold"
+      >
+        {loading ? "Signing in..." : "Sign in"}
       </Button>
 
       <div className="w-full flex centerXY gap-2">
