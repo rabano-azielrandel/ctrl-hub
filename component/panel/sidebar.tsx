@@ -4,37 +4,111 @@ import Image from "next/image";
 import Button from "../ui/Button";
 import { logout } from "@/app/actions/auth";
 import { LogOut } from "lucide-react";
+import { sidebarGroups } from "@/lib/data/sidebar";
+import { cn } from "@/lib/utils";
 
 export function Sidebar() {
   return (
-    <div className="sticky w-56 max-w-56 h-screen flex flex-col bg-amber-300">
-      {/* Header */}
-      <div className="w-full flex">
-        <div className="w-20 p-2">
-          <Image
-            src={"/icons/admin.png"}
-            alt="admin"
-            width={100}
-            height={100}
-            className="object-cover"
-          />
+    <aside className="w-64 h-screen flex flex-col justify-between bg-[#0B1220] text-white p-4">
+      {/* TOP */}
+      <div>
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center">
+            <Image
+              src="/icons/admin.png"
+              alt="admin"
+              width={40}
+              height={40}
+              loading="eager"
+              className="w-10 h-10 object-cover scale-150"
+            />
+          </div>
+          <div>
+            <h3 className="font-semibold leading-none">Admin</h3>
+            <p className="text-xs text-white/50">V1.0.0</p>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <h3>Admin</h3>
-          <p>V1.0.0</p>
+
+        {/* NAV */}
+        <div className="space-y-6">
+          {sidebarGroups.map((group, i) => (
+            <div key={i}>
+              {/* Group Title */}
+              <p className="text-xs text-white/40 tracking-widest mb-2 px-2">
+                {group.title}
+              </p>
+
+              {/* Items */}
+              <ul className="space-y-1">
+                {group.items.map((item, idx) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <li key={idx}>
+                      <button
+                        className={cn(
+                          "w-full flex items-center justify-between px-3 py-2 rounded-xl transition",
+                          item.active
+                            ? "bg-white/10 border border-white/10"
+                            : "hover:bg-white/5",
+                        )}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon size={18} className="text-white/70" />
+                          <span className="text-sm">{item.label}</span>
+                        </div>
+
+                        {/* Badge */}
+                        {item.badge && (
+                          <span
+                            className={cn(
+                              "text-xs px-2 py-0.5 rounded-full",
+                              item.badge === "New"
+                                ? "bg-teal-500/20 text-teal-400"
+                                : "bg-red-500/20 text-red-400",
+                            )}
+                          >
+                            {item.badge}
+                          </span>
+                        )}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Nav Items */}
-      <div className="w-full flex flex-col border-y border-white/40"></div>
+      {/* BOTTOM */}
+      <div className="space-y-3">
+        {/* User Card */}
+        <div className="flex items-center justify-between bg-white/5 rounded-xl px-3 py-2">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-violet-500/30 flex items-center justify-center text-sm">
+              AZ
+            </div>
+            <div>
+              <p className="text-sm">Azii</p>
+              <p className="text-xs text-white/50">Super Admin</p>
+            </div>
+          </div>
 
-      {/* Logout */}
-      <div className="w-full flex">
-        <Button variant="secondary" onClick={() => logout()}>
-          <LogOut />
-          Logout
+          <div className="w-2 h-2 bg-green-400 rounded-full" />
+        </div>
+
+        {/* Logout */}
+        <Button
+          variant="secondary"
+          onClick={() => logout()}
+          className="flex gap-4"
+        >
+          <LogOut size={16} />
+          Sign out
         </Button>
       </div>
-    </div>
+    </aside>
   );
 }
