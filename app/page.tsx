@@ -1,10 +1,20 @@
 import Image from "next/image";
+import LoginForm from "@/component/forms/LoginForm";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 sm:items-start">
-        hello
+    <div className="relative w-screen h-screen flex flex-col items-center justify-center bg-[#B67DF2]">
+      <Image
+        src="/images/hero.png"
+        alt="bg"
+        fill
+        sizes="100vw"
+        priority
+        className="object-contain"
+      />
+
+      <main className="relative z-10 flex flex-1 w-full max-w-3xl justify-center items-center bg-transparent">
+        <LoginForm />
       </main>
     </div>
   );
