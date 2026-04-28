@@ -1,7 +1,9 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import Image from "next/image";
+import Input from "../ui/Input";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -31,35 +33,52 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={() => console.log("hello")}
-      className="min-w-lg min-h-130 flex flex-col centerX p-6 gap-4
-        rounded-2xl bg-white/10 backdrop-blur-xs border border-white/20 shadow-lg"
+      className="min-w-lg min-h-130 flex flex-col centerX p-10 gap-8
+        rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg"
     >
-      <div className="w-16 h-16 flex rounded-2xl bg-[#8068E7]">
-        <Image
-          src={"/images/logo.png"}
-          alt="logo"
-          width={100}
-          height={100}
-          className="object-contain"
-        />
+      <div className="flex flex-col items-center gap-2 text-center mb-6">
+        <div className="w-14 h-14 flex items-center justify-center rounded-2xl bg-[#8068E7]">
+          <Image
+            src="/images/logo.png"
+            alt="logo"
+            width={100}
+            height={100}
+            className="object-contain invert"
+          />
+        </div>
+
+        <h2 className="text-2xl font-semibold text-white">Welcome back</h2>
+
+        <p className="text-sm text-white/60">
+          Sign in to continue to your workspace
+        </p>
       </div>
-      <h2 className="text-2xl font-semibold">Welcome back</h2>
-      <p className="text-sm text-white/70">
-        Sign in to continue to your workspace
-      </p>
-      <div className="w-full flex flex-col">
-        <span
-          className={`${focus === "email" ? "text-[rgba(255,255,255,0.85)]" : ""}`}
-        >
-          EMAIL
-        </span>
-        <input
-          type="text"
-          placeholder=""
+
+      {/* Email */}
+      <div className="w-full flex flex-col gap-1 ">
+        <Input
+          label="EMAIL"
+          type="email"
           value={email}
+          placeholder="you@example.com"
           onChange={(e) => setEmail(e.target.value)}
           onFocus={() => setFocus("email")}
           onBlur={() => setFocus(null)}
+          focus={focus === "email"}
+        />
+      </div>
+
+      {/* Password */}
+      <div className="w-full flex flex-col gap-1 ">
+        <Input
+          label="PASSWORD"
+          type="password"
+          value={password}
+          placeholder="••••••••"
+          onChange={(e) => setPassword(e.target.value)}
+          onFocus={() => setFocus("password")}
+          onBlur={() => setFocus(null)}
+          focus={focus === "password"}
         />
       </div>
     </form>
