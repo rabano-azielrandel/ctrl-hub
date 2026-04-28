@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.centerXY {
+  justify-items: center;
+  align-items: center;
+}
+
+.centerX {
+  justify-items: start;
+  align-items: center;
+}
