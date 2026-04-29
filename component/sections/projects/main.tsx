@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Button from "@/component/ui/Button";
 import { ChevronDown, ChevronUp, Plus, Table2 } from "lucide-react";
+import Button from "@/component/ui/Button";
+import DataTable from "@/component/ui/DataTable";
+import { pageColumns, pageRows } from "@/lib/data/pagesTable";
 
 const items = [
   { label: "Pages", active: true },
@@ -30,7 +32,7 @@ export default function Main() {
   }, []);
 
   return (
-    <div className="w-full flex">
+    <div className="w-full flex flex-col gap-2">
       <div className="w-full h-20 flex justify-between items-center p-4 border-b border-violet-800/60">
         {/* Tag and Dropdown */}
         <div className="flex gap-4">
@@ -108,6 +110,9 @@ export default function Main() {
             <p className="font-semibold">Add new row</p>
           </Button>
         </div>
+      </div>
+      <div className="p-4">
+        <DataTable title="Pages" columns={pageColumns} rows={pageRows} />
       </div>
     </div>
   );
