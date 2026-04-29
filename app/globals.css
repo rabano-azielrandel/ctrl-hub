@@ -26,11 +26,11 @@ body {
 }
 
 .centerXY {
-  justify-items: center;
+  justify-content: center;
   align-items: center;
 }
 
 .centerX {
-  justify-items: start;
+  justify-content: start;
   align-items: center;
 }

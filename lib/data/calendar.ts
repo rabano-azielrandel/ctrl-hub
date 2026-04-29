@@ -1,5 +1,3 @@
-// /data/calendar.ts
-
 export type EventType = "general" | "sync" | "urgent" | "review";
 
 export type CalendarEvent = {
