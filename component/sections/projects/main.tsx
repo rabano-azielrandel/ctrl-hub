@@ -2,15 +2,10 @@
 
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp, Plus, Table2 } from "lucide-react";
+import { projectDropDownItems } from "@/lib/data/projects";
+import { pageColumns, pageRows } from "@/lib/data/pagesTable";
 import Button from "@/component/ui/Button";
 import DataTable from "@/component/ui/DataTable";
-import { pageColumns, pageRows } from "@/lib/data/pagesTable";
-
-const items = [
-  { label: "Pages", active: true },
-  { label: "Stack" },
-  { label: "Tasks" },
-];
 
 export default function Main() {
   const [open, setOpen] = useState(false);
@@ -73,7 +68,7 @@ export default function Main() {
 
               {/* Items */}
               <div className="px-2 pb-2 space-y-1">
-                {items.map((item) => (
+                {projectDropDownItems.map((item) => (
                   <Button
                     key={item.label}
                     variant="secondary"
