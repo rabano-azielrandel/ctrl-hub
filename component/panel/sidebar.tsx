@@ -2,12 +2,16 @@
 
 import Image from "next/image";
 import Button from "../ui/Button";
+import Link from "next/link";
 import { logout } from "@/app/actions/auth";
 import { LogOut } from "lucide-react";
 import { sidebarGroups } from "@/lib/data/sidebar";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 export function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className="w-64 h-screen flex flex-col justify-between bg-[#0B1220] text-white p-4">
       {/* TOP */}
@@ -43,36 +47,38 @@ export function Sidebar() {
               <ul className="space-y-1">
                 {group.items.map((item, idx) => {
                   const Icon = item.icon;
+                  const isActive = pathname === item.href;
 
                   return (
                     <li key={idx}>
-                      <button
-                        className={cn(
-                          "w-full flex items-center justify-between px-3 py-2 rounded-xl transition",
-                          item.active
-                            ? "bg-white/10 border border-white/10"
-                            : "hover:bg-white/5",
-                        )}
-                      >
-                        <div className="flex items-center gap-3">
-                          <Icon size={18} className="text-white/70" />
-                          <span className="text-sm">{item.label}</span>
-                        </div>
+                      <Link href={item.href}>
+                        <div
+                          className={cn(
+                            "w-full flex items-center justify-between px-3 py-2 rounded-xl transition cursor-pointer",
+                            isActive
+                              ? "bg-white/10 border border-white/10"
+                              : "hover:bg-white/5",
+                          )}
+                        >
+                          <div className="flex items-center gap-3">
+                            <Icon size={18} className="text-white/70" />
+                            <span className="text-sm">{item.label}</span>
+                          </div>
 
-                        {/* Badge */}
-                        {item.badge && (
-                          <span
-                            className={cn(
-                              "text-xs px-2 py-0.5 rounded-full",
-                              item.badge === "New"
-                                ? "bg-teal-500/20 text-teal-400"
-                                : "bg-red-500/20 text-red-400",
-                            )}
-                          >
-                            {item.badge}
-                          </span>
-                        )}
-                      </button>
+                          {item.badge && (
+                            <span
+                              className={cn(
+                                "text-xs px-2 py-0.5 rounded-full",
+                                item.badge === "New"
+                                  ? "bg-teal-500/20 text-teal-400"
+                                  : "bg-red-500/20 text-red-400",
+                              )}
+                            >
+                              {item.badge}
+                            </span>
+                          )}
+                        </div>
+                      </Link>
                     </li>
                   );
                 })}

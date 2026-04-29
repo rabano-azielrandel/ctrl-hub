@@ -13,6 +13,7 @@ import { LucideIcon } from "lucide-react";
 export interface SidebarItem {
   icon: LucideIcon;
   label: string;
+  href: string;
   badge?: string;
   active?: boolean;
 }
@@ -26,19 +27,19 @@ export const sidebarGroups: SidebarGroup[] = [
   {
     title: "MAIN",
     items: [
-      { icon: LayoutDashboard, label: "Dashboard", active: true },
-      { icon: Calendar, label: "Calendar" },
-      { icon: BriefcaseBusiness , label: "Projects", badge: "24" },
-      { icon: AlarmClockCheck, label: "Todo List" },
-      { icon: Target, label: "Analytics", badge: "New" },
+      { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", active: true },
+      { icon: Calendar, label: "Calendar", href: "/calendar" },
+      { icon: BriefcaseBusiness, label: "Projects", href: "/projects", badge: "24" },
+      { icon: AlarmClockCheck, label: "Todo List", href: "/todos" },
+      { icon: Target, label: "Analytics", href: "/analytics", badge: "New" },
     ],
   },
   {
     title: "SYSTEM",
     items: [
-      { icon: Settings, label: "Settings" },
-      { icon: Clock, label: "Audit Log" },
-      { icon: SquarePlus, label: "Integrations" },
+      { icon: Settings, label: "Settings", href: "/settings" },
+      { icon: Clock, label: "Audit Log", href: "/audit-log" },
+      { icon: SquarePlus, label: "Integrations", href: "/integrations" },
     ],
   },
 ];
