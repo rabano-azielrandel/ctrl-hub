@@ -27,8 +27,8 @@ export default function Main() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-2">
-      <div className="w-full h-20 flex justify-between items-center p-4 border-b border-violet-800/60">
+    <div className="w-full flex flex-col gap-2 bg-[#140C2A]">
+      <div className="w-full h-20 flex justify-between items-center p-4">
         {/* Tag and Dropdown */}
         <div className="flex gap-4">
           {/* Left Tag */}
