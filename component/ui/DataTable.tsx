@@ -3,10 +3,7 @@
 import React from "react";
 import clsx from "clsx";
 
-/* -------------------------------------------------------
-   TYPES
-------------------------------------------------------- */
-
+/* TYPES */
 type BadgeVariant = "live" | "progress" | "draft";
 
 type BadgeCell = {
@@ -31,10 +28,7 @@ type DataTableProps = {
   rows: RowData[];
 };
 
-/* -------------------------------------------------------
-   TYPE GUARD
-------------------------------------------------------- */
-
+/* TYPE GUARD */
 function isBadgeCell(value: CellValue): value is BadgeCell {
   return (
     typeof value === "object" &&
@@ -45,10 +39,7 @@ function isBadgeCell(value: CellValue): value is BadgeCell {
   );
 }
 
-/* -------------------------------------------------------
-   MAIN COMPONENT
-------------------------------------------------------- */
-
+/* MAIN COMPONENT */
 export default function DataTable({ title, columns, rows }: DataTableProps) {
   return (
     <div className="w-full border border-violet-900/40 bg-[#070312] text-white">
@@ -98,9 +89,7 @@ export default function DataTable({ title, columns, rows }: DataTableProps) {
   );
 }
 
-/* -------------------------------------------------------
-   CELL RENDERER
-------------------------------------------------------- */
+/* CELL RENDERER */
 
 function renderCell(value: CellValue): React.ReactNode {
   if (isBadgeCell(value)) {
@@ -110,9 +99,7 @@ function renderCell(value: CellValue): React.ReactNode {
   return value;
 }
 
-/* -------------------------------------------------------
-   BADGE
-------------------------------------------------------- */
+/* BADGE */
 
 function StatusBadge({
   label,
