@@ -2,13 +2,8 @@
 
 import { useState } from "react";
 import { Search, SquarePlus } from "lucide-react";
+import { projectPanelData } from "@/lib/data/projects";
 import Input from "@/component/ui/Input";
-
-const data = [
-  { name: "Portfolio", color: "#b67df2" },
-  { name: "Kaiseki", color: "#5dcaa5" },
-  { name: "Readers Sanctuary", color: "#edd080" },
-];
 
 export function ProjectPanel() {
   const [active, setActive] = useState(0);
@@ -35,7 +30,7 @@ export function ProjectPanel() {
       <div className="px-4 py-4 overflow-hidden">
         {/* Event List */}
         <div className="space-y-4">
-          {data.map((item, index) => (
+          {projectPanelData.map((item, index) => (
             <div
               key={index}
               onClick={() => setActive(index)}
