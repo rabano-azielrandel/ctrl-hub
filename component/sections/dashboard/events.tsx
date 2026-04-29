@@ -7,7 +7,7 @@ import { getTomorrow, isSameDay } from "@/lib/utils";
 
 export function EventsPanel() {
   return (
-    <aside className="w-64 h-screen flex flex-col justify-between bg-[#0B1220] text-white p-4">
+    <aside className="w-64 h-screen flex flex-col p-4 gap-2 justify-between bg-[#0B1220] text-white">
       {/* TOP */}
       <div className="overflow-hidden">
         {/* Header */}
@@ -61,7 +61,7 @@ export function EventsPanel() {
       </div>
 
       {/* BOTTOM */}
-      <div className="space-y-3 p-2">
+      <div className="space-y-3">
         <Button variant="secondary" className="flex gap-4">
           <SquarePlus size={16} />
           Add Event
