@@ -51,7 +51,7 @@ function isBadgeCell(value: CellValue): value is BadgeCell {
 
 export default function DataTable({ title, columns, rows }: DataTableProps) {
   return (
-    <div className="w-full max-w-4xl border border-violet-900/40 bg-[#070312] text-white">
+    <div className="w-full border border-violet-900/40 bg-[#070312] text-white">
       {/* Header */}
       <div className="flex items-center gap-3 px-6 pt-5 pb-4">
         <h2 className="text-xl font-semibold">{title}</h2>
