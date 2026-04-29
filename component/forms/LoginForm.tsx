@@ -91,7 +91,7 @@ export default function LoginForm() {
         {loading ? "Signing in..." : "Sign in"}
       </Button>
 
-      <div className="w-full flex centerXY gap-2">
+      <div className="w-full flex justify-center items-center gap-2">
         <div className="w-full h-0 border border-white/20" />
         <p className="text-nowrap">or continue with</p>
         <div className="w-full h-0 border border-white/20" />
