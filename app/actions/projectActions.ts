@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function getProjects() {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
         .schema("public")
         .from("projects")
@@ -13,3 +13,17 @@ export async function getProjects() {
 
      return data;
 }
+
+export async function getProjectsRows() {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .schema("public")
+        .from("projects")
+        .select("*");
+    
+    if (error) throw new Error(error.message);
+
+    return data;
+}
+
