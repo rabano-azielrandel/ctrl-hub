@@ -27,3 +27,15 @@ export async function getProjectsRows() {
     return data;
 }
 
+export async function getProjectsCardRows() {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .schema("public")
+        .from("project_card")
+        .select("*");
+    
+    if (error) throw new Error(error.message);
+
+    return data;
+}
