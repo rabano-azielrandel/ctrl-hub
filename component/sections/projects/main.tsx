@@ -34,7 +34,7 @@ export default function Main() {
           {/* Left Tag */}
           <div className="w-24 flex justify-center items-center px-3 py-3 gap-2 rounded-2xl border border-[#B67DF2]">
             <div className="w-2 h-2 rounded-full bg-[#B67DF2]" />
-            <p className="text-sm">Tables</p>
+            <p className="text-sm">Projects</p>
           </div>
 
           {/* Dropdown */}
@@ -46,7 +46,7 @@ export default function Main() {
               className="w-full flex items-center justify-between text-sm font-medium px-4 py-3 
                 rounded-2xl border border-violet-800/60 bg-[#10091d] text-violet-100 shadow-xl hover:bg-white/5 transition"
             >
-              <span>Pages</span>
+              <span>Tables</span>
               {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </Button>
 
