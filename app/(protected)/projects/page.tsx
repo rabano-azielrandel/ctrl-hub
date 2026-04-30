@@ -2,7 +2,7 @@ import Main from "@/component/sections/projects/main";
 import { ProjectPanel } from "@/component/sections/projects/projects";
 import { getProjects } from "@/app/actions/projectActions";
 
-const projects = getProjects();
+const projects = await getProjects();
 console.log("projects: ", projects);
 
 export default function Projects() {
