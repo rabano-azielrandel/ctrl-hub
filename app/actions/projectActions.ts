@@ -1,12 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 
-const supabase = await createClient();
-
 export async function getProjects() {
+    const supabase = await createClient();
+    
     const { data, error } = await supabase
         .schema("public")
         .from("projects")
-        .select("*");
+        .select("name")
+        .neq("name", "bot");
 
      if (error) throw new Error(error.message);
 
