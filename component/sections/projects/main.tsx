@@ -8,7 +8,11 @@ import Button from "@/component/ui/Button";
 import DataTable from "@/component/ui/DataTable";
 
 export default function Main() {
+  // DropDown State
   const [open, setOpen] = useState(false);
+  const [activeDropDown, setActiveDropDown] = useState(
+    projectDropDownItems[1].label,
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close when clicking outside
@@ -25,6 +29,8 @@ export default function Main() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  //
 
   return (
     <div className="w-full flex flex-col gap-2 bg-[#140C2A]">
@@ -72,8 +78,9 @@ export default function Main() {
                   <Button
                     key={item.label}
                     variant="secondary"
+                    onClick={() => setActiveDropDown(item.label)}
                     className={`w-full flex justify-start items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
-                      item.active
+                      activeDropDown == item.label
                         ? "bg-violet-900/60 text-violet-200"
                         : "text-violet-300 hover:bg-white/5"
                     }`}
