@@ -103,13 +103,13 @@ export default function Main() {
         </div>
 
         {/* Add Row */}
-        <div className="w-60 flex justify-center items-center px-10 gap-2 rounded-2xl">
+        <div className="w-60 flex justify-center items-center px-10 rounded-2xl">
           <Button
             variant="secondary"
-            className="flex gap-2 border border-violet-800/60 bg-[#10091d]"
+            className="flex gap-2 py-2.5 border border-violet-800/60 bg-[#10091d]"
           >
             <Plus size={16} />
-            <p className="font-semibold">Add new row</p>
+            <p className="text-sm font-semibold">Add new row</p>
           </Button>
         </div>
       </div>
