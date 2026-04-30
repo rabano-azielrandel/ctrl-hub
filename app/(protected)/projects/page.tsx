@@ -1,9 +1,10 @@
 import Main from "@/component/sections/projects/main";
 import { ProjectPanel } from "@/component/sections/projects/projects";
-import { getProjects } from "@/app/actions/projectActions";
+import { getProjects, getProjectsRows } from "@/app/actions/projectActions";
 
-const projects = await getProjects();
-console.log("projects: ", projects);
+const projectPanelData = await getProjects();
+const projectRows = await getProjectsRows();
+console.log("projects: ", projectRows);
 
 export default function Projects() {
   return (
