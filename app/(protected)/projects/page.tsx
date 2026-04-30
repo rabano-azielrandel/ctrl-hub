@@ -9,12 +9,11 @@ import {
 const projectPanelData = await getProjects();
 const projectRows = await getProjectsRows();
 const projectCardRows = await getProjectsCardRows();
-console.log("projects: ", projectCardRows);
 
 export default function Projects() {
   return (
     <div className="flex">
-      <Main />
+      <Main getProjectsRows={getProjectsRows} />
       <ProjectPanel />
     </div>
   );

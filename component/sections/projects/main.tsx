@@ -7,7 +7,11 @@ import { pageColumns, pageRows } from "@/lib/data/pagesTable";
 import Button from "@/component/ui/Button";
 import DataTable from "@/component/ui/DataTable";
 
-export default function Main() {
+interface props {
+  getProjectsRows: any;
+}
+
+export default function Main({ getProjectsRows }: props) {
   // DropDown State
   const [open, setOpen] = useState(false);
   const [activeDropDown, setActiveDropDown] = useState(
@@ -30,7 +34,11 @@ export default function Main() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  //
+  const handleChange = async (activeLabel: string) => {
+    const result = await getProjectsRows();
+    setActiveDropDown(activeLabel);
+    console.log("test", result);
+  };
 
   return (
     <div className="w-full flex flex-col gap-2 bg-[#140C2A]">
@@ -78,7 +86,7 @@ export default function Main() {
                   <Button
                     key={item.label}
                     variant="secondary"
-                    onClick={() => setActiveDropDown(item.label)}
+                    onClick={() => handleChange(item.label)}
                     className={`w-full flex justify-start items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
                       activeDropDown == item.label
                         ? "bg-violet-900/60 text-violet-200"
