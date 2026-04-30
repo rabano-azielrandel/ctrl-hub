@@ -39,10 +39,7 @@ export async function proxy(request: NextRequest) {
 
        role = data?.role ?? null;
   }
-
-  console.log("user", user);
-  console.log("role", role);
-
+  
   const isPrivileged =
     role === "admin" || role === "super-admin";
 
