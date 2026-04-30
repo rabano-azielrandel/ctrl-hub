@@ -1,6 +1,6 @@
 import {
   LayoutDashboard,
-  Calendar,
+  User,
   BriefcaseBusiness,
   AlarmClockCheck,
   Target,
@@ -28,8 +28,8 @@ export const sidebarGroups: SidebarGroup[] = [
     title: "MAIN",
     items: [
       { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", active: true },
-      { icon: Calendar, label: "Calendar", href: "/calendar" },
-      { icon: BriefcaseBusiness, label: "Projects", href: "/projects", badge: "24" },
+      { icon: BriefcaseBusiness, label: "Projects", href: "/projects" },
+      { icon: User, label: "Users", href: "/users", badge: "1" },
       { icon: AlarmClockCheck, label: "Todo List", href: "/todos" },
       { icon: Target, label: "Analytics", href: "/analytics", badge: "New" },
     ],
