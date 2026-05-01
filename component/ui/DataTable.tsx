@@ -2,31 +2,14 @@
 
 import React from "react";
 import clsx from "clsx";
-
-/* TYPES */
-type BadgeVariant = "live" | "progress" | "draft";
-
-type BadgeCell = {
-  type: "badge";
-  label: string;
-  variant?: BadgeVariant;
-};
-
-type CellValue = React.ReactNode | BadgeCell;
-
-type RowData = Record<string, CellValue>;
-
-type Column = {
-  key: string;
-  label: string;
-  width?: string;
-};
-
-type DataTableProps = {
-  title: string;
-  columns: Column[];
-  rows: RowData[];
-};
+import {
+  BadgeVariant,
+  BadgeCell,
+  CellValue,
+  RowData,
+  Column,
+  DataTableProps,
+} from "@/types/DataTable";
 
 /* TYPE GUARD */
 function isBadgeCell(value: CellValue): value is BadgeCell {
