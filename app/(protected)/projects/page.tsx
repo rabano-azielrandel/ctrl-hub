@@ -7,8 +7,6 @@ import {
 } from "@/app/actions/projectActions";
 
 const projectPanelData = await getProjects();
-const projectRows = await getProjectsRows();
-const projectCardRows = await getProjectsCardRows();
 
 export default function Projects() {
   return (
