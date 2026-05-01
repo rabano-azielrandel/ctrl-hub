@@ -59,7 +59,7 @@ export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 bg-[#140C2A]">
+    <div className="w-full flex flex-col items-center gap-2 bg-[#140C2A]">
       <div className="w-full h-20 flex justify-between items-center p-4">
         {/* Tag and Dropdown */}
         <div className="flex gap-4">
@@ -139,7 +139,7 @@ export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
           </Button>
         </div>
       </div>
-      <div className="p-4">
+      <div className="p-4 max-w-[1480px]">
         <DataTable title={activeDropDown} columns={columns} rows={rows} />
       </div>
     </div>

@@ -37,36 +37,41 @@ export default function DataTable({ title, columns, rows }: DataTableProps) {
 
       {/* Table */}
       <div className="px-6 pb-6">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-violet-900/30">
-              {columns.map((col) => (
-                <th
-                  key={col.key}
-                  style={{ width: col.width }}
-                  className="pb-3 text-left text-[11px] uppercase tracking-[0.18em] text-violet-400"
-                >
-                  {col.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-
-          <tbody>
-            {rows.map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className="border-b border-violet-900/10 last:border-none"
-              >
+        <div className="w-full overflow-x-auto">
+          <table className="min-w-[900px] w-full border-collapse">
+            <thead className="sticky top-0 bg-[#070312] z-10">
+              <tr className="border-b border-violet-900/30">
                 {columns.map((col) => (
-                  <td key={col.key} className="py-4 text-sm text-white">
-                    {renderCell(row[col.key])}
-                  </td>
+                  <th
+                    key={col.key}
+                    style={{ width: col.width }}
+                    className="pb-3 pr-6 text-left text-[11px] uppercase tracking-[0.18em] text-violet-400 whitespace-nowrap"
+                  >
+                    {col.label}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {rows.map((row, rowIndex) => (
+                <tr
+                  key={rowIndex}
+                  className="border-b border-violet-900/10 last:border-none hover:bg-violet-900/10 transition"
+                >
+                  {columns.map((col) => (
+                    <td
+                      key={col.key}
+                      className="py-4 pr-6 text-sm text-white whitespace-nowrap max-w-[250px] truncate"
+                    >
+                      {renderCell(row[col.key])}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -78,7 +83,6 @@ function renderCell(value: CellValue): React.ReactNode {
   if (isBadgeCell(value)) {
     return <StatusBadge label={value.label} variant={value.variant} />;
   }
-
   return value;
 }
 
