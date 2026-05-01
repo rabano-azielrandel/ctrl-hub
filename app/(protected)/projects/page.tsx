@@ -13,7 +13,10 @@ const projectCardRows = await getProjectsCardRows();
 export default function Projects() {
   return (
     <div className="flex">
-      <Main getProjectsRows={getProjectsRows} />
+      <Main
+        getProjectsRows={getProjectsRows}
+        getProjectsCardRows={getProjectsCardRows}
+      />
       <ProjectPanel />
     </div>
   );

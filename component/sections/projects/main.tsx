@@ -3,21 +3,29 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp, Plus, Table2 } from "lucide-react";
 import { projectDropDownItems } from "@/lib/data/projects";
-import { pageColumns, pageRows } from "@/lib/data/pagesTable";
 import Button from "@/component/ui/Button";
 import DataTable from "@/component/ui/DataTable";
+import { mapToTableFormat } from "@/lib/mappers/projectMappers";
 
-interface props {
-  getProjectsRows: any;
+interface Props {
+  getProjectsRows: () => Promise<Record<string, any>[]>;
+  getProjectsCardRows: () => Promise<Record<string, any>[]>;
 }
 
-export default function Main({ getProjectsRows }: props) {
+export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
   // DropDown State
   const [open, setOpen] = useState(false);
   const [activeDropDown, setActiveDropDown] = useState(
     projectDropDownItems[1].label,
   );
+  const [columns, setColumns] = useState<any[]>([]);
+  const [rows, setRows] = useState<any[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // load initial data on mount
+  useEffect(() => {
+    handleChange(projectDropDownItems[0].label);
+  }, []);
 
   // Close when clicking outside
   useEffect(() => {
@@ -35,9 +43,19 @@ export default function Main({ getProjectsRows }: props) {
   }, []);
 
   const handleChange = async (activeLabel: string) => {
-    const result = await getProjectsRows();
+    if (activeLabel === activeDropDown && columns.length > 0) return; // already active
+
+    // await the correct action
+    const raw = await (activeLabel === "Projects"
+      ? getProjectsRows()
+      : getProjectsCardRows());
+
+    const { columns: newColumns, rows: newRows } = mapToTableFormat(raw);
+
+    setColumns(newColumns);
+    setRows(newRows);
     setActiveDropDown(activeLabel);
-    console.log("test", result);
+    setOpen(false);
   };
 
   return (
@@ -122,7 +140,7 @@ export default function Main({ getProjectsRows }: props) {
         </div>
       </div>
       <div className="p-4">
-        <DataTable title="Pages" columns={pageColumns} rows={pageRows} />
+        <DataTable title={activeDropDown} columns={columns} rows={rows} />
       </div>
     </div>
   );
