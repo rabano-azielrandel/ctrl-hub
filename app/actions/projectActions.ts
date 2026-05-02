@@ -1,8 +1,8 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
+import { FieldDefinition } from "@/types/TableFields";
 
 const adminClient = createAdminClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -49,16 +49,16 @@ export async function getProjectsCardRows() {
     return data;
 }
 
-export async function createTable(tableName: string) {
-  // 1. Auth check using your existing server client
+export async function createTable(tableName: string, fields: FieldDefinition[]) {
   const supabase = await createClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
 
+  // 1. Verify session
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) {
     return { success: false, error: "Unauthorized: Not authenticated." };
   }
 
-  // 2. Role check
+  // 2. Verify role
   const { data: profile, error: profileError } = await supabase
     .from("user_profiles")
     .select("role")
@@ -78,10 +78,18 @@ export async function createTable(tableName: string) {
     return { success: false, error: "Invalid table name." };
   }
 
-  // 4. Call RPC via admin client
+  // 4. Validate field names
+  for (const field of fields) {
+    if (!/^[a-z][a-z0-9_]{0,62}$/.test(field.name)) {
+      return { success: false, error: `Invalid field name: "${field.name}".` };
+    }
+  }
+
+  // 5. Call RPC
   const { error: rpcError } = await adminClient.rpc("create_custom_table", {
     table_name: tableName,
     requesting_user_id: user.id,
+    fields: fields, // passed as JSONB to the function
   });
 
   if (rpcError) {
