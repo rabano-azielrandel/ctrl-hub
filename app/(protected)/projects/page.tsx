@@ -15,7 +15,7 @@ export default function Projects() {
         getProjectsRows={getProjectsRows}
         getProjectsCardRows={getProjectsCardRows}
       />
-      <ProjectPanel />
+      <ProjectPanel project={projectPanelData} />
     </div>
   );
 }

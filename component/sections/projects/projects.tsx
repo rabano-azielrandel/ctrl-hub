@@ -5,7 +5,15 @@ import { Search, SquarePlus } from "lucide-react";
 import { projectPanelData } from "@/lib/data/projects";
 import Input from "@/component/ui/Input";
 
-export function ProjectPanel() {
+interface ProjectObj {
+  name: string;
+}
+
+type Props = {
+  project: ProjectObj[];
+};
+
+export function ProjectPanel({ project }: Props) {
   const [active, setActive] = useState(0);
 
   return (
@@ -30,7 +38,7 @@ export function ProjectPanel() {
       <div className="px-4 py-4 overflow-hidden">
         {/* Event List */}
         <div className="space-y-4">
-          {projectPanelData.map((item, index) => (
+          {project.map((item, index) => (
             <div
               key={index}
               onClick={() => setActive(index)}
@@ -39,13 +47,11 @@ export function ProjectPanel() {
               <div className="flex justify-start items-center gap-2">
                 <div
                   className="w-2 h-2 rounded-full shadow-md"
-                  style={{ backgroundColor: item.color }}
+                  style={{ backgroundColor: projectPanelData[index] }}
                 />
-                <p className="text-[#b67df2] text-sm">{item.name}</p>
-              </div>
-
-              <div className="flex justify-center items-center px-2 py-1 rounded-md bg-[#2a2047] border border-black/5">
-                <p className="text-xs text-white/80">3</p>
+                <p className="text-[#b67df2] text-sm text-nowrap">
+                  {item.name}
+                </p>
               </div>
             </div>
           ))}
