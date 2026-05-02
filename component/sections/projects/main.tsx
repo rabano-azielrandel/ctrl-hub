@@ -3,15 +3,19 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp, Plus, Table2 } from "lucide-react";
 import { projectDropDownItems } from "@/lib/data/projects";
+import { mapToTableFormat } from "@/lib/mappers/projectMappers";
+import { FieldDefinition } from "@/types/TableFields";
 import Button from "@/component/ui/Button";
 import DataTable from "@/component/ui/DataTable";
-import { mapToTableFormat } from "@/lib/mappers/projectMappers";
 
 interface Props {
   getProjectsRows: () => Promise<Record<string, any>[]>;
   getProjectsCardRows: () => Promise<Record<string, any>[]>;
+  createTable: (
+    tableName: string,
+    fields: FieldDefinition[],
+  ) => Promise<{ success: true } | { success: false; error: string }>;
 }
-
 export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
   // DropDown State
   const [open, setOpen] = useState(false);
@@ -119,10 +123,10 @@ export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
 
               {/* Footer */}
               <div className="border-t border-violet-900/60 p-2">
-                <button className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-violet-300 hover:bg-white/5 transition">
+                <Button className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-violet-300 hover:bg-white/5 transition">
                   <Plus size={15} />
                   <span>New table</span>
-                </button>
+                </Button>
               </div>
             </div>
           </div>

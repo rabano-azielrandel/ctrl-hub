@@ -4,3 +4,7 @@ export type FieldDefinition = {
   nullable?: boolean;
   default?: string;
 };
+
+export type CreateTableResult =
+  | { success: true }
+  | { success: false; error: string };

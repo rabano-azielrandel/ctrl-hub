@@ -4,6 +4,7 @@ import {
   getProjects,
   getProjectsRows,
   getProjectsCardRows,
+  createTable,
 } from "@/app/actions/projectActions";
 
 const projectPanelData = await getProjects();
@@ -14,6 +15,7 @@ export default function Projects() {
       <Main
         getProjectsRows={getProjectsRows}
         getProjectsCardRows={getProjectsCardRows}
+        createTable={createTable}
       />
       <ProjectPanel project={projectPanelData} />
     </div>

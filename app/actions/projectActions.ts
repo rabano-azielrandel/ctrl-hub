@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
-import { FieldDefinition } from "@/types/TableFields";
+import { FieldDefinition, CreateTableResult } from "@/types/TableFields";
 
 const adminClient = createAdminClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -49,16 +49,18 @@ export async function getProjectsCardRows() {
     return data;
 }
 
-export async function createTable(tableName: string, fields: FieldDefinition[]) {
+export async function createTable(
+  tableName: string,
+  fields: FieldDefinition[]
+): Promise<CreateTableResult> {  // 👈 explicit return type
+
   const supabase = await createClient();
 
-  // 1. Verify session
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) {
     return { success: false, error: "Unauthorized: Not authenticated." };
   }
 
-  // 2. Verify role
   const { data: profile, error: profileError } = await supabase
     .from("user_profiles")
     .select("role")
@@ -73,23 +75,20 @@ export async function createTable(tableName: string, fields: FieldDefinition[]) 
     return { success: false, error: "Forbidden: Insufficient permissions." };
   }
 
-  // 3. Validate table name
   if (!/^[a-z][a-z0-9_]{1,62}$/.test(tableName)) {
     return { success: false, error: "Invalid table name." };
   }
 
-  // 4. Validate field names
   for (const field of fields) {
     if (!/^[a-z][a-z0-9_]{0,62}$/.test(field.name)) {
       return { success: false, error: `Invalid field name: "${field.name}".` };
     }
   }
 
-  // 5. Call RPC
   const { error: rpcError } = await adminClient.rpc("create_custom_table", {
     table_name: tableName,
     requesting_user_id: user.id,
-    fields: fields, // passed as JSONB to the function
+    fields,
   });
 
   if (rpcError) {
@@ -97,5 +96,5 @@ export async function createTable(tableName: string, fields: FieldDefinition[]) 
     return { success: false, error: "Failed to create table." };
   }
 
-  return { success: true };
+  return { success: true };  // TypeScript now knows this is literal `true`
 }
