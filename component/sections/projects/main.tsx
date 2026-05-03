@@ -32,7 +32,8 @@ export default function Main({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Modal State
-  const [modalState, setModalState] = useState(false);
+  const [addTableState, setAddTableState] = useState(false);
+  const [addRowState, setAddRowState] = useState(false);
 
   // load initial data on mount
   useEffect(() => {
@@ -132,7 +133,7 @@ export default function Main({
               {/* Footer */}
               <div className="border-t border-violet-900/60 p-2">
                 <Button
-                  onClick={() => setModalState((prev) => !prev)}
+                  onClick={() => setAddTableState((prev) => !prev)}
                   className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-violet-300 hover:bg-white/5 transition"
                 >
                   <Plus size={15} />
@@ -143,9 +144,10 @@ export default function Main({
           </div>
         </div>
 
-        {/* Add Row */}
+        {/* Add Row Button */}
         <div className="w-60 flex justify-center items-center px-10 rounded-2xl">
           <Button
+            onClick={() => setAddRowState((prev) => !prev)}
             variant="secondary"
             className="flex gap-2 py-2.5 border border-violet-800/60 bg-[#10091d]"
           >
@@ -158,12 +160,12 @@ export default function Main({
         <DataTable title={activeDropDown} columns={columns} rows={rows} />
       </div>
 
-      {modalState && (
+      {addTableState && (
         <div className="absolute inset-0 flex justify-center items-center bg-gray-900/80 z-2">
           <div className="max-h-170 flex flex-col items-center gap-4 px-4 py-8 rounded-xl bg-[#10091D] overflow-y-scroll">
             <div className="w-full flex justify-end">
               <Button
-                onClick={() => setModalState((prev) => !prev)}
+                onClick={() => setAddTableState((prev) => !prev)}
                 variant="secondary"
                 size="sm"
                 className="w-10 rounded-full border border-white"
@@ -172,6 +174,24 @@ export default function Main({
               </Button>
             </div>
             <NewTableModal createTable={createTable} />
+          </div>
+        </div>
+      )}
+
+      {addRowState && (
+        <div className="absolute inset-0 flex justify-center items-center bg-gray-900/80 z-2">
+          <div className="max-h-170 flex flex-col items-center gap-4 px-4 py-8 rounded-xl bg-[#10091D] overflow-y-scroll">
+            <div className="w-full flex justify-end">
+              <Button
+                onClick={() => setAddRowState((prev) => !prev)}
+                variant="secondary"
+                size="sm"
+                className="w-10 rounded-full border border-white"
+              >
+                X
+              </Button>
+            </div>
+            add new row
           </div>
         </div>
       )}
