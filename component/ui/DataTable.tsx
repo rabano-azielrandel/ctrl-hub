@@ -35,7 +35,7 @@ export default function DataTable({ title, columns, rows }: DataTableProps) {
         <div className="w-full overflow-x-auto rounded-xl border border-violet-900/30">
           <table className="min-w-[900px] w-full border-collapse">
             {/* HEADER */}
-            <thead className="sticky top-0 z-10 backdrop-blur bg-[#070312]/80">
+            <thead className="sticky top-0 z-1 backdrop-blur bg-[#070312]/80">
               <tr className="border-b border-violet-900/30">
                 {columns.map((col) => (
                   <th
