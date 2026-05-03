@@ -13,7 +13,7 @@ interface Props {
   createTable: (
     tableName: string,
     fields: FieldDefinition[],
-  ) => Promise<CreateTableResult>;
+  ) => Promise<{ success: true } | { success: false; error: string }>;
 }
 
 export default function NewTableModal({ createTable }: Props) {

@@ -17,7 +17,11 @@ interface Props {
     fields: FieldDefinition[],
   ) => Promise<{ success: true } | { success: false; error: string }>;
 }
-export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
+export default function Main({
+  getProjectsRows,
+  getProjectsCardRows,
+  createTable,
+}: Props) {
   // DropDown State
   const [open, setOpen] = useState(false);
   const [activeDropDown, setActiveDropDown] = useState(
@@ -155,8 +159,20 @@ export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
       </div>
 
       {modalState && (
-        <div className="absolute top-72 flex bg-red-400">
-          <NewTableModal />
+        <div className="absolute inset-0 flex justify-center items-center bg-gray-500/40 z-2">
+          <div className="flex flex-col items-center gap-4 px-4 py-8 rounded-xl bg-[#10091D]">
+            <div className="w-full flex justify-end">
+              <Button
+                onClick={() => setModalState((prev) => !prev)}
+                variant="secondary"
+                size="sm"
+                className="w-10 rounded-full border border-white"
+              >
+                X
+              </Button>
+            </div>
+            <NewTableModal createTable={createTable} />
+          </div>
         </div>
       )}
     </div>
