@@ -7,6 +7,7 @@ import { mapToTableFormat } from "@/lib/mappers/projectMappers";
 import { FieldDefinition } from "@/types/TableFields";
 import Button from "@/component/ui/Button";
 import DataTable from "@/component/ui/DataTable";
+import NewTableModal from "@/component/forms/CreateTableForm";
 
 interface Props {
   getProjectsRows: () => Promise<Record<string, any>[]>;
@@ -25,6 +26,9 @@ export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
   const [columns, setColumns] = useState<any[]>([]);
   const [rows, setRows] = useState<any[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Modal State
+  const [modalState, setModalState] = useState(false);
 
   // load initial data on mount
   useEffect(() => {
@@ -63,7 +67,7 @@ export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
   };
 
   return (
-    <div className="w-full flex flex-col items-center gap-2 bg-[#140C2A]">
+    <div className="relative w-full flex flex-col items-center gap-2 bg-[#140C2A]">
       <div className="w-full h-20 flex justify-between items-center p-4">
         {/* Tag and Dropdown */}
         <div className="flex gap-4">
@@ -123,7 +127,10 @@ export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
 
               {/* Footer */}
               <div className="border-t border-violet-900/60 p-2">
-                <Button className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-violet-300 hover:bg-white/5 transition">
+                <Button
+                  onClick={() => setModalState((prev) => !prev)}
+                  className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-violet-300 hover:bg-white/5 transition"
+                >
                   <Plus size={15} />
                   <span>New table</span>
                 </Button>
@@ -146,6 +153,12 @@ export default function Main({ getProjectsRows, getProjectsCardRows }: Props) {
       <div className="p-4 max-w-[1480px]">
         <DataTable title={activeDropDown} columns={columns} rows={rows} />
       </div>
+
+      {modalState && (
+        <div className="absolute top-72 flex bg-red-400">
+          <NewTableModal />
+        </div>
+      )}
     </div>
   );
 }
