@@ -104,6 +104,17 @@ export default function NewTableModal({ createTable }: Props) {
       </div>
 
       {/* Fields */}
+      <div className="mb-2 text-xs text-violet-400/60">
+        ℹ️{" "}
+        <span className="font-mono">
+          id, created_at, and created_by are added automatically.
+        </span>
+        <br />
+        ℹ️{" "}
+        <span className="font-mono">
+          int and boolean types must have default value.
+        </span>
+      </div>
       <div className="space-y-3 max-h-[320px] overflow-y-auto">
         {fields.map((field) => (
           <div
