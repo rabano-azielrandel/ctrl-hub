@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { FieldDefinition } from "@/types/TableFields";
 import Button from "@/component/ui/Button";
+import { CheckCircle, XCircle, X } from "lucide-react";
 
-// Extend backend type for UI use
-type UIField = FieldDefinition & {
-  id: string;
+type UIField = FieldDefinition & { id: string };
+
+type Notification = {
+  type: "success" | "error";
+  message: string;
 };
 
 interface Props {
@@ -27,8 +30,14 @@ export default function NewTableModal({ createTable }: Props) {
       default: "",
     },
   ]);
+  const [notification, setNotification] = useState<Notification | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  // Fully typed updater
+  const notify = (type: "success" | "error", message: string) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 4000); // auto-dismiss after 4s
+  };
+
   const updateField = <K extends keyof UIField>(
     id: string,
     key: K,
@@ -59,23 +68,28 @@ export default function NewTableModal({ createTable }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // prevent empty table name
-    if (tableName === null || tableName === "") {
-      console.error("Table name can't be empty!");
+    if (!tableName) {
+      notify("error", "Table name can't be empty!");
       return;
     }
 
-    // remove UI-only "id"
-    const formatted: FieldDefinition[] = fields.map(({ id, ...rest }) => rest);
+    setLoading(true);
+
+    const formatted: FieldDefinition[] = fields.map(({ id, ...rest }) => ({
+      ...rest,
+      default: rest.default === "" ? undefined : rest.default,
+    }));
 
     const res = await createTable(tableName, formatted);
+    setLoading(false);
 
     if (!res.success) {
-      alert(res.error);
+      notify("error", res.error);
       return;
     }
 
-    // optional reset
+    notify("success", `Table "${tableName}" created successfully!`);
+
     setTableName("");
     setFields([
       {
@@ -93,6 +107,30 @@ export default function NewTableModal({ createTable }: Props) {
       onSubmit={handleSubmit}
       className="w-[600px] p-6 rounded-2xl bg-[#10091d] border border-violet-800/60"
     >
+      {/* Notification */}
+      {notification && (
+        <div
+          className={`flex items-center justify-between gap-3 mb-4 px-4 py-3 rounded-xl border text-sm
+            ${
+              notification.type === "success"
+                ? "bg-green-900/30 border-green-700/50 text-green-300"
+                : "bg-red-900/30 border-red-700/50 text-red-300"
+            }`}
+        >
+          <div className="flex items-center gap-2">
+            {notification.type === "success" ? (
+              <CheckCircle size={16} />
+            ) : (
+              <XCircle size={16} />
+            )}
+            <span>{notification.message}</span>
+          </div>
+          <button type="button" onClick={() => setNotification(null)}>
+            <X size={14} className="opacity-60 hover:opacity-100" />
+          </button>
+        </div>
+      )}
+
       {/* Table Name */}
       <div className="mb-4">
         <label className="text-sm text-violet-300">Table Name</label>
@@ -121,7 +159,6 @@ export default function NewTableModal({ createTable }: Props) {
             key={field.id}
             className="flex flex-col gap-2 border border-violet-800/40 p-3 rounded-xl"
           >
-            {/* Main Row */}
             <div className="flex gap-2 items-center">
               <input
                 placeholder="field_name"
@@ -129,7 +166,6 @@ export default function NewTableModal({ createTable }: Props) {
                 onChange={(e) => updateField(field.id, "name", e.target.value)}
                 className="flex-1 px-3 py-2 rounded-lg bg-transparent border border-violet-800/40"
               />
-
               <select
                 value={field.type}
                 onChange={(e) =>
@@ -154,7 +190,6 @@ export default function NewTableModal({ createTable }: Props) {
                   <option key={t}>{t}</option>
                 ))}
               </select>
-
               <Button
                 onClick={() => removeField(field.id)}
                 variant="secondary"
@@ -164,8 +199,6 @@ export default function NewTableModal({ createTable }: Props) {
                 ✕
               </Button>
             </div>
-
-            {/* Advanced */}
             <div className="flex items-center gap-4 text-sm text-violet-300">
               <label className="flex items-center gap-2">
                 <input
@@ -177,7 +210,6 @@ export default function NewTableModal({ createTable }: Props) {
                 />
                 Nullable
               </label>
-
               <input
                 placeholder="default value"
                 value={field.default || ""}
@@ -205,7 +237,9 @@ export default function NewTableModal({ createTable }: Props) {
 
       {/* Submit */}
       <div className="flex justify-end mt-6">
-        <Button type="submit">Create Table</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Creating..." : "Create Table"}
+        </Button>
       </div>
     </form>
   );
