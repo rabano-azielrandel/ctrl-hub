@@ -159,8 +159,8 @@ export default function Main({
       </div>
 
       {modalState && (
-        <div className="absolute inset-0 flex justify-center items-center bg-gray-500/40 z-2">
-          <div className="flex flex-col items-center gap-4 px-4 py-8 rounded-xl bg-[#10091D]">
+        <div className="absolute inset-0 flex justify-center items-center bg-gray-900/80 z-2">
+          <div className="h-170 flex flex-col items-center gap-4 px-4 py-8 rounded-xl bg-[#10091D] overflow-y-hidden">
             <div className="w-full flex justify-end">
               <Button
                 onClick={() => setModalState((prev) => !prev)}
