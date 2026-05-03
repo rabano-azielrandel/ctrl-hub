@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FieldDefinition, CreateTableResult } from "@/types/TableFields";
+import { FieldDefinition } from "@/types/TableFields";
 import Button from "@/component/ui/Button";
 
 // Extend backend type for UI use
@@ -58,6 +58,12 @@ export default function NewTableModal({ createTable }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // prevent empty table name
+    if (tableName === null || tableName === "") {
+      console.error("Table name can't be empty!");
+      return;
+    }
 
     // remove UI-only "id"
     const formatted: FieldDefinition[] = fields.map(({ id, ...rest }) => rest);
@@ -122,7 +128,7 @@ export default function NewTableModal({ createTable }: Props) {
                     e.target.value as FieldDefinition["type"],
                   )
                 }
-                className="px-3 py-2 rounded-lg bg-transparent border border-violet-800/40"
+                className="px-3 py-2 rounded-lg bg-[#10091D] text-white border border-violet-800/40"
               >
                 {[
                   "text",
@@ -138,13 +144,14 @@ export default function NewTableModal({ createTable }: Props) {
                 ))}
               </select>
 
-              <button
-                type="button"
+              <Button
                 onClick={() => removeField(field.id)}
-                className="text-red-400"
+                variant="secondary"
+                size="sm"
+                className="w-10 text-red-400"
               >
                 ✕
-              </button>
+              </Button>
             </div>
 
             {/* Advanced */}
@@ -174,13 +181,16 @@ export default function NewTableModal({ createTable }: Props) {
       </div>
 
       {/* Add Field */}
-      <button
-        type="button"
-        onClick={addField}
-        className="mt-3 text-sm text-violet-400 hover:text-violet-200"
-      >
-        + Add field
-      </button>
+      <div className="flex justify-end mt-3">
+        <Button
+          onClick={addField}
+          variant="secondary"
+          size="sm"
+          className="w-fit text-sm text-violet-400 hover:text-violet-200"
+        >
+          + Add field
+        </Button>
+      </div>
 
       {/* Submit */}
       <div className="flex justify-end mt-6">
