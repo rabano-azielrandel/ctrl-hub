@@ -19,7 +19,7 @@ interface Props {
   ) => Promise<{ success: true } | { success: false; error: string }>;
   addRow: (
     tableName: string,
-    fields: FieldDefinition[],
+    fields: Record<string, any>,
   ) => Promise<{ success: true } | { success: false; error: string }>;
 }
 export default function Main({
@@ -197,7 +197,11 @@ export default function Main({
                 X
               </Button>
             </div>
-            <AddRow tableName={activeDropDown} cols={columns} addRow={addRow} />
+            <AddRow
+              tableName={activeDropDown}
+              cols={columns}
+              addRowFunc={addRow}
+            />
           </div>
         </div>
       )}

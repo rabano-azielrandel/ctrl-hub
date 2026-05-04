@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { CheckCircle, XCircle, X } from "lucide-react";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
-import { CheckCircle, XCircle, X } from "lucide-react";
 
 type colsObj = {
   key: string;
@@ -18,12 +18,10 @@ type Notification = {
 interface Props {
   tableName: string;
   cols: colsObj[];
-  addRowFunc: (values: Record<string, string>) => Promise<
-    | {
-        success: true;
-      }
-    | { success: false; error: string }
-  >;
+  addRowFunc: (
+    tableName: string,
+    fields: Record<string, any>,
+  ) => Promise<{ success: true } | { success: false; error: string }>;
 }
 
 export default function AddRow({ cols, tableName, addRowFunc }: Props) {
@@ -48,7 +46,7 @@ export default function AddRow({ cols, tableName, addRowFunc }: Props) {
 
     setLoading(true);
 
-    const res = await addRowFunc(values);
+    const res = await addRowFunc(tableName, values);
 
     setLoading(false);
 
