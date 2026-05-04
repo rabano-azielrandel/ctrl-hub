@@ -98,3 +98,54 @@ export async function createTable(
 
   return { success: true };  // TypeScript now knows this is literal `true`
 }
+
+export async function addRow(
+  tableName: string,
+  rowData: Record<string, any>
+): Promise<CreateTableResult> {
+  const supabase = await createClient();
+
+  // 1. Verify session
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return { success: false, error: "Unauthorized: Not authenticated." };
+  }
+
+  // 2. Verify role
+  const { data: profile, error: profileError } = await supabase
+    .from("user_profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError || !profile) {
+    return { success: false, error: "Unauthorized: Could not verify role." };
+  }
+
+  if (profile.role !== "super-admin") {
+    return { success: false, error: "Forbidden: Insufficient permissions." };
+  }
+
+  // 3. Validate table name
+  if (!/^[a-z][a-z0-9_]{1,62}$/.test(tableName)) {
+    return { success: false, error: "Invalid table name." };
+  }
+
+  // 4. Inject created_by automatically
+  const payload = {
+    ...rowData,
+    created_by: user.id,
+  };
+
+  // 5. Insert into the active table
+  const { error: insertError } = await adminClient
+    .from(tableName)
+    .insert(payload);
+
+  if (insertError) {
+    console.error("Insert error:", insertError);
+    return { success: false, error: insertError.message };
+  }
+
+  return { success: true };
+}
