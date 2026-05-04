@@ -25,11 +25,13 @@ export default function AddRow({ cols, tableName }: Props) {
   };
 
   return (
-    <form className="w-full max-w-2xl p-4">
-      <h2>{tableName}</h2>
+    <form className="w-full max-w-2xl space-y-2 p-4">
+      <h2 className="p-2 rounded-md border border-violet-900/40">
+        {tableName}
+      </h2>
 
-      <div className="p-4 mb-10">
-        <div className="grid grid-cols-3 gap-4 p-4 max-h-64 overflow-y-auto">
+      <div className="p-4 mb-10 rounded-md border border-violet-900/40">
+        <div className="grid grid-cols-3 gap-4 p-4 max-h-64 overflow-y-auto ">
           {cols.map((item) => (
             <Input
               key={item.key}
