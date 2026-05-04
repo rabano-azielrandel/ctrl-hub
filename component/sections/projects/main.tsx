@@ -181,7 +181,7 @@ export default function Main({
 
       {addRowState && (
         <div className="absolute inset-0 flex justify-center items-center bg-gray-900/80 z-2">
-          <div className="max-h-170 flex flex-col items-center gap-4 px-4 py-8 rounded-xl bg-[#10091D] overflow-y-auto">
+          <div className="max-h-170 flex flex-col items-center px-4 py-8 rounded-xl bg-[#10091D] overflow-y-auto">
             <div className="w-full flex justify-end">
               <Button
                 onClick={() => setAddRowState((prev) => !prev)}
