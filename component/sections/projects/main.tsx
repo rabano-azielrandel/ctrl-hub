@@ -17,11 +17,16 @@ interface Props {
     tableName: string,
     fields: FieldDefinition[],
   ) => Promise<{ success: true } | { success: false; error: string }>;
+  addRow: (
+    tableName: string,
+    fields: FieldDefinition[],
+  ) => Promise<{ success: true } | { success: false; error: string }>;
 }
 export default function Main({
   getProjectsRows,
   getProjectsCardRows,
   createTable,
+  addRow,
 }: Props) {
   // DropDown State
   const [open, setOpen] = useState(false);
@@ -192,7 +197,7 @@ export default function Main({
                 X
               </Button>
             </div>
-            <AddRow tableName={activeDropDown} cols={columns} />
+            <AddRow tableName={activeDropDown} cols={columns} addRow={addRow} />
           </div>
         </div>
       )}
