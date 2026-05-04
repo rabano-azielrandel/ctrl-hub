@@ -59,7 +59,6 @@ export default function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
           onFocus={() => setFocus("email")}
           onBlur={() => setFocus(null)}
-          focus={focus === "email"}
         />
       </div>
 
@@ -73,7 +72,6 @@ export default function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           onFocus={() => setFocus("password")}
           onBlur={() => setFocus(null)}
-          focus={focus === "password"}
         />
       </div>
 
