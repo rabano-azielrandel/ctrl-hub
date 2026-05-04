@@ -8,6 +8,7 @@ import { FieldDefinition } from "@/types/TableFields";
 import Button from "@/component/ui/Button";
 import DataTable from "@/component/ui/DataTable";
 import NewTableModal from "@/component/forms/CreateTableForm";
+import AddRow from "@/component/forms/AddRow";
 
 interface Props {
   getProjectsRows: () => Promise<Record<string, any>[]>;
@@ -191,7 +192,7 @@ export default function Main({
                 X
               </Button>
             </div>
-            add new row
+            <AddRow tableName={activeDropDown} cols={columns} />
           </div>
         </div>
       )}

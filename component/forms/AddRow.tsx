@@ -1,16 +1,29 @@
-import React from "react";
+"use client";
+
 import Input from "../ui/Input";
 
+type colsObj = {
+  key: string;
+  label: string;
+};
+
 interface Props {
-  cols: string[];
+  tableName: string;
+  cols: colsObj[];
 }
 
-export default function AddRow({ cols }: Props) {
+export default function AddRow({ cols, tableName }: Props) {
   return (
-    <div className="flex flex-col">
+    <div className="w-40 flex flex-col">
+      <h2>{tableName}</h2>
       {cols.map((item, index) => (
         <div key={index} className="flex">
-          <Input label={item} type="text" value={""} placeholder="" />
+          <Input
+            label={item.label}
+            type="text"
+            value={""}
+            placeholder={item.key}
+          />
         </div>
       ))}
     </div>
