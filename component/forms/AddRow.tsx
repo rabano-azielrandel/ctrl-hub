@@ -18,7 +18,7 @@ type Notification = {
 interface Props {
   tableName: string;
   cols: colsObj[];
-  addRow: (values: Record<string, string>) => Promise<
+  addRowFunc: (values: Record<string, string>) => Promise<
     | {
         success: true;
       }
@@ -26,7 +26,7 @@ interface Props {
   >;
 }
 
-export default function AddRow({ cols, tableName, addRow }: Props) {
+export default function AddRow({ cols, tableName, addRowFunc }: Props) {
   const [values, setValues] = useState<Record<string, string>>({});
   const [notification, setNotification] = useState<Notification | null>(null);
   const [loading, setLoading] = useState(false);
@@ -48,7 +48,7 @@ export default function AddRow({ cols, tableName, addRow }: Props) {
 
     setLoading(true);
 
-    const res = await addRow(values);
+    const res = await addRowFunc(values);
 
     setLoading(false);
 
