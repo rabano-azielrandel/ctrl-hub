@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import {GetUsersResult} from "@/types/TableFields"
+import { GetUsersResult } from "@/types/TableFields"
 
 export async function getUsers(): Promise<GetUsersResult> {
   const supabase = await createClient();
