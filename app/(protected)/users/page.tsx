@@ -1,10 +1,11 @@
+import DataTable from "@/component/ui/DataTable";
+
+const col = ["users"];
+
 export default function Users() {
   return (
-    <div>
-      <p>hello</p>
-      <p>hello</p>
-      <p>hello</p>
-      <p>hello</p>
+    <div className="p-4 bg-[#140C2A]">
+      <DataTable columns={} />
     </div>
   );
 }
