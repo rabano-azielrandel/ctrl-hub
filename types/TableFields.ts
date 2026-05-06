@@ -8,3 +8,7 @@ export type FieldDefinition = {
 export type CreateTableResult =
   | { success: true }
   | { success: false; error: string };
+
+  type GetUsersResult =
+  | { success: true; data: Record<string, any>[] }
+  | { success: false; error: string };
