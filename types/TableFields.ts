@@ -9,6 +9,6 @@ export type CreateTableResult =
   | { success: true }
   | { success: false; error: string };
 
-  type GetUsersResult =
+export type GetUsersResult =
   | { success: true; data: Record<string, any>[] }
   | { success: false; error: string };
