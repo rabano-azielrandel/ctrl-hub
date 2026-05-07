@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FieldDefinition } from "@/types/TableFields";
-import Button from "@/component/ui/Button";
+import Button from "@/components/ui/Button";
 import { CheckCircle, XCircle, X } from "lucide-react";
 
 type UIField = FieldDefinition & { id: string };

@@ -1,5 +1,5 @@
-import Main from "@/component/sections/projects/main";
-import { ProjectPanel } from "@/component/sections/projects/projects";
+import Main from "@/components/sections/projects/main";
+import { ProjectPanel } from "@/components/sections/projects/projects";
 import {
   getProjects,
   getProjectsRows,

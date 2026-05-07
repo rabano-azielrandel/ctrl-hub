@@ -1,4 +1,4 @@
-import { Sidebar } from "@/component/panel/Sidebar";
+import { Sidebar } from "@/components/panel/Sidebar";
 
 export default function ProtectedLayout({
   children,

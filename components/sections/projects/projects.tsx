@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Search, SquarePlus } from "lucide-react";
 import { projectPanelData } from "@/lib/data/projects";
-import Input from "@/component/ui/Input";
+import Input from "@/components/ui/Input";
 
 interface ProjectObj {
   name: string;

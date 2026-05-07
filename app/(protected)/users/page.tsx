@@ -1,4 +1,4 @@
-import DataTable from "@/component/ui/DataTable";
+import DataTable from "@/components/ui/DataTable";
 import { getUsers } from "@/app/actions/userActions";
 import { mapToTableFormat } from "@/lib/mappers/projectMappers";
 

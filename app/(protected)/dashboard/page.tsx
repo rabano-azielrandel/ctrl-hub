@@ -1,5 +1,5 @@
-import { EventsPanel } from "@/component/sections/dashboard/events";
-import Main from "@/component/sections/dashboard/main";
+import { EventsPanel } from "@/components/sections/dashboard/events";
+import Main from "@/components/sections/dashboard/main";
 
 export default function Dashboard() {
   return (

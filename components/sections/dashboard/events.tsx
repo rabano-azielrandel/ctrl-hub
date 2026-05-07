@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/component/ui/Button";
+import Button from "@/components/ui/Button";
 import { SquarePlus } from "lucide-react";
 import { dashboardCalendarData, dotColor } from "@/lib/data/calendar";
 import { getTomorrow, isSameDay } from "@/lib/utils";
@@ -31,9 +31,9 @@ export function EventsPanel() {
 
             let label;
 
-            if (isSameDay(item.date, today)) {
+            if (isSameDay(new Date(item.date), today)) {
               label = "Today";
-            } else if (isSameDay(item.date, tomorrow)) {
+            } else if (isSameDay(new Date(item.date), tomorrow)) {
               label = "Tomorrow";
             } else {
               label = item.date;
