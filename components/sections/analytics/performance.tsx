@@ -8,19 +8,19 @@ export default function Performance() {
 
   return (
     <div className="p-4 border border-[#B67DF2]">
-      <p>PERFORMANCE TARGETS</p>
+      <p className="text-[#B67DF2]">PERFORMANCE TARGETS {engagement}</p>
 
       <div className="flex">
         {/* Slider */}
-        <div className="flex flex-col">
+        <div className="relative flex flex-col w-full bg-amber-50">
           <Slider
-            value={engagement}
+            value={[engagement]}
             onValueChange={(value) =>
               setEngagement(Array.isArray(value) ? value[0] : value)
             }
             max={100}
             step={1}
-            className="w-full"
+            className="w-full bg-amber-300"
           />
         </div>
 
