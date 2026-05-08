@@ -1,5 +1,7 @@
-import { Slider as SliderPrimitive } from "@base-ui/react/slider";
+"use client";
 
+import { useState } from "react";
+import { Slider as SliderPrimitive } from "@base-ui/react/slider";
 import { cn } from "@/lib/utils";
 
 function Slider({
@@ -10,6 +12,8 @@ function Slider({
   max = 100,
   ...props
 }: SliderPrimitive.Root.Props) {
+  const [dragging, setDragging] = useState(false);
+
   const _values = Array.isArray(value)
     ? value
     : Array.isArray(defaultValue)
@@ -18,7 +22,11 @@ function Slider({
 
   return (
     <SliderPrimitive.Root
-      className={cn("data-horizontal:w-full data-vertical:h-full", className)}
+      className={cn(
+        "data-horizontal:w-full data-vertical:h-full",
+        dragging ? "cursor-grabbing" : "cursor-grab",
+        className,
+      )}
       data-slot="slider"
       defaultValue={defaultValue}
       value={value}
@@ -43,7 +51,11 @@ function Slider({
           <SliderPrimitive.Thumb
             data-slot="slider-thumb"
             key={index}
-            className="block size-4 shrink-0 rounded-full border border-primary bg-[#B67DF2] shadow-sm ring-ring/50 transition-[color,box-shadow] select-none hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+            onPointerDown={() => setDragging(true)}
+            onPointerUp={() => setDragging(false)}
+            className="block size-4 shrink-0 rounded-full border border-[#F7F7F7] bg-[#B67DF2]
+              shadow-sm ring-ring/50 transition-[color,box-shadow] select-none hover:ring-4 
+              focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
           />
         ))}
       </SliderPrimitive.Control>
