@@ -4,14 +4,19 @@ import { useState } from "react";
 import { Slider as SliderPrimitive } from "@base-ui/react/slider";
 import { cn } from "@/lib/utils";
 
+type SliderProps = SliderPrimitive.Root.Props & {
+  color: string;
+};
+
 function Slider({
   className,
   defaultValue,
   value,
   min = 0,
   max = 100,
+  color,
   ...props
-}: SliderPrimitive.Root.Props) {
+}: SliderProps) {
   const [dragging, setDragging] = useState(false);
 
   const _values = Array.isArray(value)
@@ -53,9 +58,9 @@ function Slider({
             key={index}
             onPointerDown={() => setDragging(true)}
             onPointerUp={() => setDragging(false)}
-            className="block size-4 shrink-0 rounded-full border border-[#F7F7F7] bg-[#B67DF2]
+            className={`block size-4 shrink-0 rounded-full border border-[#F7F7F7] ${color}
               shadow-sm ring-ring/50 transition-[color,box-shadow] select-none hover:ring-4 
-              focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+              focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50`}
           />
         ))}
       </SliderPrimitive.Control>
