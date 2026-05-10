@@ -48,7 +48,7 @@ function Slider({
           {/* Slider Active */}
           <SliderPrimitive.Indicator
             data-slot="slider-range"
-            className="bg-[#B67DF2] select-none data-horizontal:h-full data-vertical:w-full"
+            className={`${color} select-none data-horizontal:h-full data-vertical:w-full`}
           />
         </SliderPrimitive.Track>
         {/* Slider circle button */}
@@ -58,7 +58,7 @@ function Slider({
             key={index}
             onPointerDown={() => setDragging(true)}
             onPointerUp={() => setDragging(false)}
-            className={`block size-4 shrink-0 rounded-full border border-[#F7F7F7] ${color}
+            className={`block size-4 shrink-0 rounded-full border border-[#F7F7F7] bg-[#30302E]
               shadow-sm ring-ring/50 transition-[color,box-shadow] select-none hover:ring-4 
               focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50`}
           />
