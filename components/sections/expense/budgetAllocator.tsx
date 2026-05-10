@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
 import { HalfDonut } from "@/components/ui/HalfDonut";
 import { Category, GetExpenseTypesResult } from "@/types/ExpenseTracker";
+import Button from "@/components/ui/Button";
 
 interface Props {
   getExpenseTypes: () => Promise<GetExpenseTypesResult>;
@@ -12,6 +13,7 @@ interface Props {
 const STEP = 100;
 
 export default function BudgetAllocator({ getExpenseTypes }: Props) {
+  const [isAddRowOpen, setAddRow] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [values, setValues] = useState<Record<string, number>>({});
 
@@ -59,25 +61,21 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
   };
 
   return (
-    <div className="bg-[#140F2A] p-6 rounded-2xl w-full max-w-xl space-y-6">
+    <div className="bg-[#140F2A] p-4 w-full min-w-xl h-full space-y-6 overflow-scroll">
       {/* HALF DONUTS */}
-      <div className="flex justify-between">
-        {categories.slice(0, 4).map((cat) => {
+      <div className="grid grid-cols-6 gap-4">
+        {categories.map((cat) => {
           const percent = (values[cat.id] / monthlySalary) * 100;
 
           return (
-            <HalfDonut
-              key={cat.id}
-              value={percent}
-              color={cat.color}
-              label={cat.label}
-            />
+            <div key={cat.id} className="flex flex-col items-center">
+              <HalfDonut value={percent} color={cat.color} label={cat.label} />
+            </div>
           );
         })}
       </div>
-
       {/* SLIDERS */}
-      <div className="space-y-4">
+      <div className="h-60 w-full space-y-4 overflow-scroll">
         {categories.map((cat) => {
           const percent = ((values[cat.id] ?? 0) / monthlySalary) * 100;
 
@@ -111,7 +109,6 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
           );
         })}
       </div>
-
       {/* TOTAL */}
       <div className="pt-4 border-t border-white/10">
         <div className="flex justify-between text-sm text-white/70">
@@ -127,6 +124,15 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
             }}
           />
         </div>
+      </div>
+      {/* ACTION BUTTONS */}
+      <div className="flex justify-end p-4">
+        <Button
+          onClick={() => setAddRow((prev) => !prev)}
+          className="w-30 text-medium"
+        >
+          Edit Rows
+        </Button>
       </div>
     </div>
   );
