@@ -7,6 +7,7 @@ import {
   Settings,
   Clock,
   SquarePlus,
+  PhilippinePeso
 } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 
@@ -32,6 +33,12 @@ export const sidebarGroups: SidebarGroup[] = [
       { icon: User, label: "Users", href: "/users", badge: "1" },
       { icon: AlarmClockCheck, label: "Todo List", href: "/todos" },
       { icon: Target, label: "Analytics", href: "/analytics", badge: "New" },
+    ],
+  },
+    {
+    title: "FINANCE",
+    items: [
+      { icon: PhilippinePeso , label: "Expense Tracker", href: "/expense" },
     ],
   },
   {
