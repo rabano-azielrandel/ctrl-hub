@@ -3,38 +3,41 @@
 import { useState, useMemo, useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
 import { HalfDonut } from "@/components/ui/HalfDonut";
-import { categories } from "@/lib/data/expenseTracker";
+import { Category, GetExpenseTypesResult } from "@/types/ExpenseTracker";
 
 interface Props {
-  getExpenseTypes: () => Promise<Record<string, any>[]>;
+  getExpenseTypes: () => Promise<GetExpenseTypesResult>;
 }
 
 const STEP = 100;
 
 export default function BudgetAllocator({ getExpenseTypes }: Props) {
-  const [raw, setRaw] = useState<Record<string, any>[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [values, setValues] = useState<Record<string, number>>({});
 
   useEffect(() => {
     async function handleData() {
-      const data = await getExpenseTypes();
-      setRaw(data);
+      const result = await getExpenseTypes();
+
+      if (!result.success) {
+        console.error("Failed to fetch expense types:", result.error);
+        return;
+      }
+
+      const fetchedCategories = result.data;
+      setCategories(fetchedCategories);
+
+      // Initialize values to 0 for each dynamic category
+      const initialValues = Object.fromEntries(
+        fetchedCategories.map((cat) => [cat.id, 0]),
+      );
+      setValues(initialValues);
     }
 
     handleData();
   }, [getExpenseTypes]);
 
-  console.log("new data: ", raw);
-
   const monthlySalary = 20000;
-
-  const [values, setValues] = useState<Record<string, number>>({
-    housing: 0,
-    food: 0,
-    transport: 0,
-    savings: 0,
-    leisure: 0,
-    others: 0,
-  });
 
   const totalAllocated = useMemo(
     () => Object.values(values).reduce((a, b) => a + b, 0),
@@ -47,7 +50,6 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
     const current = values[id];
     const diff = newValue - current;
 
-    // prevent overflow
     if (diff > remaining) return;
 
     setValues((prev) => ({
@@ -77,14 +79,15 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
       {/* SLIDERS */}
       <div className="space-y-4">
         {categories.map((cat) => {
-          const percent = (values[cat.id] / monthlySalary) * 100;
+          const percent = ((values[cat.id] ?? 0) / monthlySalary) * 100;
 
           return (
             <div key={cat.id} className="space-y-1">
               <div className="flex justify-between text-sm">
                 <span style={{ color: cat.color }}>{cat.label}</span>
                 <span className="text-white/70">
-                  {percent.toFixed(0)}% · ₱{values[cat.id].toLocaleString()}
+                  {percent.toFixed(0)}% · ₱
+                  {(values[cat.id] ?? 0).toLocaleString()}
                 </span>
               </div>
 
@@ -92,17 +95,14 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
                 min={0}
                 max={monthlySalary}
                 step={STEP}
-                value={[values[cat.id]]}
+                value={[values[cat.id] ?? 0]}
                 onValueChange={(val) =>
                   handleChange(cat.id, Array.isArray(val) ? val[0] : val)
                 }
                 color=""
                 className="w-full"
-              >
-                {/* pass color via style */}
-              </Slider>
+              />
 
-              {/* colored track override */}
               <div
                 className="h-1.5 rounded-full -mt-2"
                 style={{ backgroundColor: cat.color }}

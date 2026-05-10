@@ -2,9 +2,9 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { expenseColors } from "@/lib/data/expenseTracker";
-import { Category } from "@/types/ExpenseTracker";
+import { Category, GetExpenseTypesResult } from "@/types/ExpenseTracker";
 
-export async function getExpenseTypes() {
+export async function getExpenseTypes(): Promise<GetExpenseTypesResult> {
   const supabase = await createClient();
 
   const {
