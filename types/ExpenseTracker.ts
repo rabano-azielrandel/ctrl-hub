@@ -8,3 +8,7 @@ export type Category = {
   label: string;
   color: string;
 };
+
+type GetExpenseTypesResult =
+  | { success: true; data: Category[] }
+  | { success: false; error: string };
