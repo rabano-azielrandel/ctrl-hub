@@ -4,11 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { expenseColors } from "@/lib/data/expenseTracker";
 import { Category } from "@/types/ExpenseTracker";
 
-export async function getExpenseTypes(): Promise<{
-  success: boolean;
-  data?: Category[];
-  error?: string;
-}> {
+export async function getExpenseTypes() {
   const supabase = await createClient();
 
   const {
@@ -37,6 +33,8 @@ export async function getExpenseTypes(): Promise<{
     label: item.name,
     color: expenseColors[index % expenseColors.length],
   }));
+
+  console.log("server data: ", categories);
 
   return {
     success: true,

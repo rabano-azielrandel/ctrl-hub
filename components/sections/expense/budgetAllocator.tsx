@@ -1,13 +1,30 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
 import { HalfDonut } from "@/components/ui/HalfDonut";
 import { categories } from "@/lib/data/expenseTracker";
 
+interface Props {
+  getExpenseTypes: () => Promise<Record<string, any>[]>;
+}
+
 const STEP = 100;
 
-export default function BudgetAllocator() {
+export default function BudgetAllocator({ getExpenseTypes }: Props) {
+  const [raw, setRaw] = useState<Record<string, any>[]>([]);
+
+  useEffect(() => {
+    async function handleData() {
+      const data = await getExpenseTypes();
+      setRaw(data);
+    }
+
+    handleData();
+  }, [getExpenseTypes]);
+
+  console.log("new data: ", raw);
+
   const monthlySalary = 20000;
 
   const [values, setValues] = useState<Record<string, number>>({

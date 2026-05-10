@@ -28,7 +28,7 @@ export default function ExpenseTracker() {
       </div>
       <div className="h-[85%] flex gap-4 bg-blue-400">
         <div className="w-full flex justify-center items-center border border-red-500">
-          <BudgetAllocator />
+          <BudgetAllocator getExpenseTypes={getExpenseTypes} />
         </div>
         <div className="w-full border "></div>
       </div>
