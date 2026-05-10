@@ -4,7 +4,9 @@ import { useState, useMemo, useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
 import { HalfDonut } from "@/components/ui/HalfDonut";
 import { Category, GetExpenseTypesResult } from "@/types/ExpenseTracker";
+import { X } from "lucide-react";
 import Button from "@/components/ui/Button";
+import ExpenseTypesModal from "@/components/forms/ExpenseTypeModal";
 
 interface Props {
   getExpenseTypes: () => Promise<GetExpenseTypesResult>;
@@ -14,12 +16,16 @@ const STEP = 100;
 
 export default function BudgetAllocator({ getExpenseTypes }: Props) {
   const [isAddRowOpen, setAddRow] = useState(false);
+
   const [categories, setCategories] = useState<Category[]>([]);
-  const [values, setValues] = useState<Record<string, number>>({});
+
+  const [values, setValues] = useState<Record<number, number>>({});
 
   useEffect(() => {
     async function handleData() {
       const result = await getExpenseTypes();
+
+      console.log("client data: ", result);
 
       if (!result.success) {
         console.error("Failed to fetch expense types:", result.error);
@@ -27,12 +33,16 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
       }
 
       const fetchedCategories = result.data;
+
       setCategories(fetchedCategories);
 
-      // Initialize values to 0 for each dynamic category
+      /**
+       * initialize slider values
+       */
       const initialValues = Object.fromEntries(
         fetchedCategories.map((cat) => [cat.id, 0]),
-      );
+      ) as Record<number, number>;
+
       setValues(initialValues);
     }
 
@@ -48,8 +58,9 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
 
   const remaining = monthlySalary - totalAllocated;
 
-  const handleChange = (id: string, newValue: number) => {
-    const current = values[id];
+  const handleChange = (id: number, newValue: number) => {
+    const current = values[id] ?? 0;
+
     const diff = newValue - current;
 
     if (diff > remaining) return;
@@ -61,11 +72,11 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
   };
 
   return (
-    <div className="relative bg-[#140F2A] p-4 w-full min-w-xl h-full space-y-6 overflow-scroll">
+    <div className="relative h-full min-w-xl w-full space-y-6 overflow-scroll bg-[#140F2A] p-4">
       {/* HALF DONUTS */}
       <div className="grid grid-cols-6 gap-4">
         {categories.map((cat) => {
-          const percent = (values[cat.id] / monthlySalary) * 100;
+          const percent = ((values[cat.id] ?? 0) / monthlySalary) * 100;
 
           return (
             <div key={cat.id} className="flex flex-col items-center">
@@ -74,6 +85,7 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
           );
         })}
       </div>
+
       {/* SLIDERS */}
       <div className="h-60 w-full space-y-4 overflow-scroll">
         {categories.map((cat) => {
@@ -83,6 +95,7 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
             <div key={cat.id} className="space-y-1">
               <div className="flex justify-between text-sm">
                 <span style={{ color: cat.color }}>{cat.label}</span>
+
                 <span className="text-white/70">
                   {percent.toFixed(0)}% · ₱
                   {(values[cat.id] ?? 0).toLocaleString()}
@@ -102,29 +115,34 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
               />
 
               <div
-                className="h-1.5 rounded-full -mt-2"
-                style={{ backgroundColor: cat.color }}
+                className="-mt-2 h-1.5 rounded-full"
+                style={{
+                  backgroundColor: cat.color,
+                }}
               />
             </div>
           );
         })}
       </div>
+
       {/* TOTAL */}
-      <div className="pt-4 border-t border-white/10">
+      <div className="border-t border-white/10 pt-4">
         <div className="flex justify-between text-sm text-white/70">
           <span>Total Allocated</span>
+
           <span>{((totalAllocated / monthlySalary) * 100).toFixed(0)}%</span>
         </div>
 
-        <div className="h-2 bg-[#2A2047] rounded-full mt-2 overflow-hidden">
+        <div className="mt-2 overflow-hidden rounded-full bg-[#2A2047]">
           <div
-            className="h-full bg-green-400"
+            className="h-2 bg-green-400"
             style={{
               width: `${(totalAllocated / monthlySalary) * 100}%`,
             }}
           />
         </div>
       </div>
+
       {/* ACTION BUTTONS */}
       <div className="flex justify-end p-4">
         <Button
@@ -137,14 +155,18 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
 
       {/* FORM */}
       {isAddRowOpen && (
-        <div className="absolute inset-20 flex flex-col p-4 bg-[#140F2A] border border-[#9146EA]">
+        <div className="absolute inset-20 z-40 border border-[#9146EA] bg-[#140F2A] p-4 overflow-hidden">
           <div className="flex justify-end">
             <Button
               onClick={() => setAddRow((prev) => !prev)}
-              className="w-12 text-bold rounded-full"
+              className="flex h-14 w-14 items-center justify-center rounded-full border border-white/50 text-white transition hover:bg-white/10"
             >
-              X
+              <X size={26} />
             </Button>
+          </div>
+
+          <div className="relative h-full w-full">
+            <ExpenseTypesModal initialData={categories} />
           </div>
         </div>
       )}

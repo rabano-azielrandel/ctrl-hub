@@ -38,10 +38,10 @@ export const summaryCards: Summary[] = [
 ];
 
 export const categories: Category[] = [
-  { id: "housing", label: "Housing", color: expenseColors[0] },
-  { id: "food", label: "Food", color: expenseColors[1] },
-  { id: "transport", label: "Transport", color: expenseColors[2] },
-  { id: "savings", label: "Savings", color: expenseColors[3] },
-  { id: "leisure", label: "Leisure", color: expenseColors[4] },
-  { id: "others", label: "Others", color: expenseColors[5] },
+  { id: 1, label: "Housing", color: expenseColors[0] },
+  { id: 2, label: "Food", color: expenseColors[1] },
+  { id: 3, label: "Transport", color: expenseColors[2] },
+  { id: 4, label: "Savings", color: expenseColors[3] },
+  { id: 5, label: "Leisure", color: expenseColors[4] },
+  { id: 6, label: "Others", color: expenseColors[5] },
 ];

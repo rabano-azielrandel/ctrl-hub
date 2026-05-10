@@ -4,7 +4,7 @@ export type Summary = {
 };
 
 export type Category = {
-  id: string;
+  id: number;
   label: string;
   color: string;
 };
