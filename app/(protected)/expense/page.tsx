@@ -23,7 +23,7 @@ export default function ExpenseTracker() {
             </h3>
 
             <p className="text-[#F7F7F7] text-center text-sm font-medium">
-              {item.amount}
+              ₱{item.amount}
             </p>
           </div>
         ))}

@@ -1,3 +1,5 @@
+import { summary } from "@/types/ExpenseTracker";
+
 export const expenseColors = [
   "#B67DF1",
   "#5DCAA5",
@@ -16,21 +18,21 @@ export const borderColors = [
   "border-[#F0A070]",
 ];
 
-export const summaryCards = [
+export const summaryCards: summary[] = [
   {
     title: "Monthly Salary",
-    amount: "₱ 1500",
+    amount: 1500,
   },
   {
     title: "Total Spent",
-    amount: "₱ 1500",
+    amount: 1500,
   },
   {
     title: "Savings",
-    amount: "₱ 1500",
+    amount: 1500,
   },
   {
     title: "Total Expense Entries",
-    amount: "₱ 1500",
+    amount: 1500,
   },
 ];
