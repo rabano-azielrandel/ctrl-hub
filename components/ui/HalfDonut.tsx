@@ -1,4 +1,4 @@
-function HalfDonut({
+export function HalfDonut({
   value,
   color,
   label,
