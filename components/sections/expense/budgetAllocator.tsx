@@ -72,7 +72,7 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
   };
 
   return (
-    <div className="relative h-full min-w-xl w-full space-y-6 overflow-scroll bg-[#140F2A] p-4">
+    <div className="relative min-w-xl w-full space-y-6 overflow-scroll bg-[#140F2A] p-4">
       {/* HALF DONUTS */}
       <div className="grid grid-cols-6 gap-4">
         {categories.map((cat) => {
