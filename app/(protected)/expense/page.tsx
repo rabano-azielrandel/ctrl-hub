@@ -36,11 +36,11 @@ export default async function ExpenseTracker() {
           </div>
         ))}
       </div>
-      <div className="h-[85%] flex gap-4 bg-blue-400">
-        <div className="w-full flex justify-center items-center border border-red-500">
+      <div className="h-[85%] flex gap-4">
+        <div className="w-full flex justify-center items-center">
           <BudgetAllocator getExpenseTypes={getExpenseTypes} />
         </div>
-        <div className="w-full border ">
+        <div className="w-full rounded-lg overflow-hidden">
           <DataTable columns={columns} rows={rows} title="Expenses" />
         </div>
       </div>
