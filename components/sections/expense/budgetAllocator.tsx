@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
 import { HalfDonut } from "@/components/ui/HalfDonut";
-import { Category } from "@/types/ExpenseTracker";
+import { categories } from "@/lib/data/expenseTracker";
 
 const STEP = 100;
 
@@ -76,7 +76,9 @@ export default function BudgetAllocator() {
                 max={monthlySalary}
                 step={STEP}
                 value={[values[cat.id]]}
-                onValueChange={([val]) => handleChange(cat.id, val)}
+                onValueChange={(val) =>
+                  handleChange(cat.id, Array.isArray(val) ? val[0] : val)
+                }
                 color=""
                 className="w-full"
               >
