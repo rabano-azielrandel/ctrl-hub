@@ -8,15 +8,15 @@ import { categories } from "@/lib/data/expenseTracker";
 const STEP = 100;
 
 export default function BudgetAllocator() {
-  const monthlySalary = 50000;
+  const monthlySalary = 20000;
 
   const [values, setValues] = useState<Record<string, number>>({
-    housing: 15000,
-    food: 10000,
-    transport: 7500,
-    savings: 5000,
-    leisure: 5000,
-    others: 7500,
+    housing: 0,
+    food: 0,
+    transport: 0,
+    savings: 0,
+    leisure: 0,
+    others: 0,
   });
 
   const totalAllocated = useMemo(
