@@ -7,8 +7,8 @@ import { mapToTableFormat } from "@/lib/mappers/projectMappers";
 import { FieldDefinition } from "@/types/TableFields";
 import Button from "@/components/ui/Button";
 import DataTable from "@/components/ui/DataTable";
-import NewTableModal from "@/component/forms/CreateTableForm";
-import AddRow from "@/component/forms/AddRow";
+import NewTableModal from "@/components/forms/CreateTableForm";
+import AddRow from "@/components/forms/AddRow";
 
 interface Props {
   getProjectsRows: () => Promise<Record<string, any>[]>;
