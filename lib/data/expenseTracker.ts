@@ -37,7 +37,7 @@ export const summaryCards: Summary[] = [
   },
 ];
 
-const categories: Category[] = [
+export const categories: Category[] = [
   { id: "housing", label: "Housing", color: expenseColors[0] },
   { id: "food", label: "Food", color: expenseColors[1] },
   { id: "transport", label: "Transport", color: expenseColors[2] },
