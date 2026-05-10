@@ -1,8 +1,5 @@
-import {
-  summaryCards,
-  expenseColors,
-  borderColors,
-} from "@/lib/data/expenseTracker";
+import { summaryCards, borderColors } from "@/lib/data/expenseTracker";
+import BudgetAllocator from "@/components/sections/expense/budgetAllocator";
 
 export default function ExpenseTracker() {
   return (
@@ -28,7 +25,12 @@ export default function ExpenseTracker() {
           </div>
         ))}
       </div>
-      <div className="h-[85%] bg-blue-400">a</div>
+      <div className="h-[85%] flex gap-4 bg-blue-400">
+        <div className="w-full flex justify-center items-center border border-red-500">
+          <BudgetAllocator />
+        </div>
+        <div className="w-full border "></div>
+      </div>
     </div>
   );
 }
