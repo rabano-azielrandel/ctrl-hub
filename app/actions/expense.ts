@@ -89,7 +89,10 @@ export async function getExpenses(): Promise<GetExpensesResult> {
       expense_name: expense.expense_types?.[0]?.name ?? "Unknown",
       amount: expense.amount,
       note: expense.note,
-      expense_date: new Date(expense.expense_date),
+      expense_date: new Date(expense.expense_date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+      }),
     })) ?? [];
 
   return {

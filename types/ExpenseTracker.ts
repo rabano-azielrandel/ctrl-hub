@@ -14,7 +14,7 @@ export type Expenses = {
   expense_name: string;
   amount: number;
   note: string | null;
-  expense_date: Date;
+  expense_date: string;
 };
 
 export type GetExpenseTypesResult =
