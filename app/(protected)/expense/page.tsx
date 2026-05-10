@@ -1,9 +1,18 @@
 import { summaryCards, borderColors } from "@/lib/data/expenseTracker";
-import { getExpenseTypes } from "@/app/actions/expense";
+import { getExpenses, getExpenseTypes } from "@/app/actions/expense";
 import BudgetAllocator from "@/components/sections/expense/budgetAllocator";
 import DataTable from "@/components/ui/DataTable";
+import { mapToTableFormat } from "@/lib/mappers/projectMappers";
 
-export default function ExpenseTracker() {
+export default async function ExpenseTracker() {
+  const result = await getExpenses();
+
+  if (!result.success) {
+    throw new Error(result.error);
+  }
+
+  const { columns, rows } = mapToTableFormat(result.data);
+
   return (
     <div className="h-screen flex flex-col gap-4 p-4 bg-[#100D17]">
       {/* Summary */}
@@ -31,7 +40,9 @@ export default function ExpenseTracker() {
         <div className="w-full flex justify-center items-center border border-red-500">
           <BudgetAllocator getExpenseTypes={getExpenseTypes} />
         </div>
-        <div className="w-full border "></div>
+        <div className="w-full border ">
+          <DataTable columns={columns} rows={rows} title="Expenses" />
+        </div>
       </div>
     </div>
   );
