@@ -1,4 +1,4 @@
-import { summary } from "@/types/ExpenseTracker";
+import { summary, Category } from "@/types/ExpenseTracker";
 
 export const expenseColors = [
   "#B67DF1",
@@ -35,4 +35,13 @@ export const summaryCards: summary[] = [
     title: "Total Expense Entries",
     amount: 1500,
   },
+];
+
+const categories: Category[] = [
+  { id: "housing", label: "Housing", color: expenseColors[0] },
+  { id: "food", label: "Food", color: expenseColors[1] },
+  { id: "transport", label: "Transport", color: expenseColors[2] },
+  { id: "savings", label: "Savings", color: expenseColors[3] },
+  { id: "leisure", label: "Leisure", color: expenseColors[4] },
+  { id: "others", label: "Others", color: expenseColors[5] },
 ];
