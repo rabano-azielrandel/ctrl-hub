@@ -7,6 +7,15 @@ export const expenseColors = [
   "#F0A070",
 ];
 
+export const borderColors = [
+  "border-[#B67DF1]",
+  "border-[#5DCAA5]",
+  "border-[#EDD080]",
+  "border-[#F57A7A]",
+  "border-[#7EC8F0]",
+  "border-[#F0A070]",
+];
+
 export const summaryCards = [
   {
     title: "Monthly Salary",
