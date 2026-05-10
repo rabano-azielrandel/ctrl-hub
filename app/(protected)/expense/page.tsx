@@ -15,7 +15,7 @@ export default function ExpenseTracker() {
             className="relative w-40 flex flex-col justify-center items-center rounded-lg border border-[#7b6fa0] bg-[#17112A] overflow-hidden"
           >
             <div
-              className={`absolute top-0 w-full border-2 ${borderColors[index]}`}
+              className={`absolute top-0 w-full rounded-lg border-1 ${borderColors[index]}`}
             />
 
             <h3 className="h-10 flex items-center text-[#7b6fa0] text-center text-sm font-medium leading-tight">
