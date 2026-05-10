@@ -37,7 +37,6 @@ function Slider({
       value={value}
       min={min}
       max={max}
-      thumbAlignment="edge"
       {...props}
     >
       <SliderPrimitive.Control className="relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:min-h-40 data-vertical:w-auto data-vertical:flex-col">
@@ -58,9 +57,10 @@ function Slider({
             key={index}
             onPointerDown={() => setDragging(true)}
             onPointerUp={() => setDragging(false)}
-            className={`block size-4 shrink-0 rounded-full border border-[#F7F7F7] bg-[#30302E]
-              shadow-sm ring-ring/50 transition-[color,box-shadow] select-none hover:ring-4 
-              focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50`}
+            className={`block size-4 shrink-0 rounded-full border border-[#F7F7F7]
+                      bg-[#30302E] shadow-sm ring-ring/50 transition-[color,box-shadow] select-none hover:ring-4 
+                        focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 
+                        mt-[2px]`} // for center
           />
         ))}
       </SliderPrimitive.Control>
