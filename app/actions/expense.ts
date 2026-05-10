@@ -2,7 +2,12 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { expenseColors } from "@/lib/data/expenseTracker";
-import { Category, GetExpenseTypesResult } from "@/types/ExpenseTracker";
+import {
+  Category,
+  GetExpenseTypesResult,
+  Expenses,
+  GetExpensesResult,
+} from "@/types/ExpenseTracker";
 
 export async function getExpenseTypes(): Promise<GetExpenseTypesResult> {
   const supabase = await createClient();
@@ -37,5 +42,58 @@ export async function getExpenseTypes(): Promise<GetExpenseTypesResult> {
   return {
     success: true,
     data: categories,
+  };
+}
+
+export async function getExpenses(): Promise<GetExpensesResult> {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return {
+      success: false,
+      error: "Unauthorized: Not authenticated.",
+    };
+  }
+
+  const { data: expenses, error } = await supabase
+    .from("expenses")
+    .select(
+      `
+      expense_id,
+      expense_type_id,
+      amount,
+      note,
+      expense_date,
+      expense_types (
+        name
+      )
+    `,
+    )
+    .eq("auth_id", user.id);
+
+  if (error) {
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+
+  const formattedExpenses: Expenses[] =
+    expenses?.map((expense) => ({
+      id: expense.expense_id,
+      expense_name: expense.expense_types?.[0]?.name ?? "Unknown",
+      amount: expense.amount,
+      note: expense.note,
+      expense_date: new Date(expense.expense_date),
+    })) ?? [];
+
+  return {
+    success: true,
+    data: formattedExpenses,
   };
 }
