@@ -61,7 +61,7 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
   };
 
   return (
-    <div className="bg-[#140F2A] p-4 w-full min-w-xl h-full space-y-6 overflow-scroll">
+    <div className="relative bg-[#140F2A] p-4 w-full min-w-xl h-full space-y-6 overflow-scroll">
       {/* HALF DONUTS */}
       <div className="grid grid-cols-6 gap-4">
         {categories.map((cat) => {
@@ -134,6 +134,20 @@ export default function BudgetAllocator({ getExpenseTypes }: Props) {
           Edit Rows
         </Button>
       </div>
+
+      {/* FORM */}
+      {isAddRowOpen && (
+        <div className="absolute inset-20 flex flex-col p-4 bg-[#140F2A] border border-[#9146EA]">
+          <div className="flex justify-end">
+            <Button
+              onClick={() => setAddRow((prev) => !prev)}
+              className="w-12 text-bold rounded-full"
+            >
+              X
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
