@@ -1,4 +1,4 @@
-import { summary, Category } from "@/types/ExpenseTracker";
+import { Summary, Category } from "@/types/ExpenseTracker";
 
 export const expenseColors = [
   "#B67DF1",
@@ -18,7 +18,7 @@ export const borderColors = [
   "border-[#F0A070]",
 ];
 
-export const summaryCards: summary[] = [
+export const summaryCards: Summary[] = [
   {
     title: "Monthly Salary",
     amount: 1500,

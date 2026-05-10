@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
 import { HalfDonut } from "@/components/ui/HalfDonut";
+import { Category } from "@/types/ExpenseTracker";
 
 const STEP = 100;
 
