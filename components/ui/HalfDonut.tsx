@@ -7,20 +7,46 @@ export function HalfDonut({
   color: string;
   label: string;
 }) {
+  const radius = 30;
+  const stroke = 6;
+  const cx = 36;
+  const cy = 36;
+
+  // Half circle arc: left to right along the top
+  const circumference = Math.PI * radius; // half circumference
+  const progress = (value / 100) * circumference;
+
+  // Arc path: starts bottom-left, goes up and over to bottom-right
+  const arcPath = `M ${cx - radius},${cy} A ${radius},${radius} 0 0,1 ${cx + radius},${cy}`;
+
   return (
-    <div className="flex flex-col items-center gap-2">
-      <div className="relative w-16 h-8 overflow-hidden">
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: `conic-gradient(${color} ${value * 1.8}deg, #2A2047 0deg)`,
-          }}
-        />
-        <div className="absolute inset-1 bg-[#140F2A] rounded-full" />
+    <div className="flex flex-col items-center gap-1">
+      <div className="relative">
+        <svg width={72} height={42} viewBox="0 0 72 42">
+          {/* Background track */}
+          <path
+            d={arcPath}
+            fill="none"
+            stroke="#2A2047"
+            strokeWidth={stroke}
+            strokeLinecap="round"
+          />
+          {/* Colored progress */}
+          <path
+            d={arcPath}
+            fill="none"
+            stroke={color}
+            strokeWidth={stroke}
+            strokeLinecap="round"
+            strokeDasharray={`${progress} ${circumference}`}
+          />
+        </svg>
       </div>
 
-      <div className="text-xs text-center">
-        <div style={{ color }}>{value.toFixed(0)}%</div>
+      <div className="text-xs text-center leading-tight">
+        <div style={{ color }} className="font-semibold">
+          {value.toFixed(0)}%
+        </div>
         <div className="text-white/50">{label}</div>
       </div>
     </div>
