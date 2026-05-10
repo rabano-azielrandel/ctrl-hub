@@ -6,57 +6,61 @@ import { FieldDefinition, CreateTableResult } from "@/types/TableFields";
 
 const adminClient = createAdminClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_SERVICE_ROLE_KEY!
+  process.env.NEXT_SERVICE_ROLE_KEY!,
 );
 
 export async function getProjects() {
-    const supabase = await createClient();
+  const supabase = await createClient();
 
-    const { data, error } = await supabase
-        .schema("public")
-        .from("projects")
-        .select("name")
-        .neq("name", "bot");
+  const { data, error } = await supabase
+    .schema("public")
+    .from("projects")
+    .select("name")
+    .neq("name", "bot");
 
-     if (error) throw new Error(error.message);
+  if (error) throw new Error(error.message);
 
-     return data;
+  return data;
 }
 
 export async function getProjectsRows() {
-    const supabase = await createClient();
+  const supabase = await createClient();
 
-    const { data, error } = await supabase
-        .schema("public")
-        .from("projects")
-        .select("*");
-    
-    if (error) throw new Error(error.message);
+  const { data, error } = await supabase
+    .schema("public")
+    .from("projects")
+    .select("*");
 
-    return data;
+  if (error) throw new Error(error.message);
+
+  return data;
 }
 
 export async function getProjectsCardRows() {
-    const supabase = await createClient();
+  const supabase = await createClient();
 
-    const { data, error } = await supabase
-        .schema("public")
-        .from("project_card")
-        .select("*");
-    
-    if (error) throw new Error(error.message);
+  const { data, error } = await supabase
+    .schema("public")
+    .from("project_card")
+    .select("*");
 
-    return data;
+  if (error) throw new Error(error.message);
+
+  return data;
 }
 
 export async function createTable(
   tableName: string,
-  fields: FieldDefinition[]
-): Promise<CreateTableResult> {  // 👈 explicit return type
+  fields: FieldDefinition[],
+): Promise<CreateTableResult> {
+  // 👈 explicit return type
 
   const supabase = await createClient();
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
   if (authError || !user) {
     return { success: false, error: "Unauthorized: Not authenticated." };
   }
@@ -96,17 +100,20 @@ export async function createTable(
     return { success: false, error: "Failed to create table." };
   }
 
-  return { success: true };  // TypeScript now knows this is literal `true`
+  return { success: true }; // TypeScript now knows this is literal `true`
 }
 
 export async function addRow(
   tableName: string,
-  rowData: Record<string, any>
+  rowData: Record<string, any>,
 ): Promise<CreateTableResult> {
   const supabase = await createClient();
 
   // 1. Verify session
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
   if (authError || !user) {
     return { success: false, error: "Unauthorized: Not authenticated." };
   }
