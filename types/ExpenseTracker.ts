@@ -9,6 +9,6 @@ export type Category = {
   color: string;
 };
 
-type GetExpenseTypesResult =
+export type GetExpenseTypesResult =
   | { success: true; data: Category[] }
   | { success: false; error: string };
