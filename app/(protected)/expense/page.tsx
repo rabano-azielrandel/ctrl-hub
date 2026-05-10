@@ -1,5 +1,6 @@
 import { summaryCards, borderColors } from "@/lib/data/expenseTracker";
 import BudgetAllocator from "@/components/sections/expense/budgetAllocator";
+import { getExpenseTypes } from "@/app/actions/expense";
 
 export default function ExpenseTracker() {
   return (
