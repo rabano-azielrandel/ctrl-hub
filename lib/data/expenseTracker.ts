@@ -1,3 +1,12 @@
+export const expenseColors = [
+  "#B67DF1",
+  "#5DCAA5",
+  "#EDD080",
+  "#F57A7A",
+  "#7EC8F0",
+  "#F0A070",
+];
+
 export const summaryCards = [
   {
     title: "Monthly Salary",
