@@ -34,8 +34,6 @@ export async function getExpenseTypes(): Promise<GetExpenseTypesResult> {
     color: expenseColors[index % expenseColors.length],
   }));
 
-  console.log("server data: ", categories);
-
   return {
     success: true,
     data: categories,
