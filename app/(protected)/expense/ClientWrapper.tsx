@@ -12,10 +12,10 @@ import { GetExpenseTypesResult } from "@/types/ExpenseTracker";
 interface Props {
   col: Column[];
   row: RowData[];
-  getExpenseTypes: () => Promise<GetExpenseTypesResult>;
+  expenseTypes: GetExpenseTypesResult; // ← data, not a function
 }
 
-const ClientWrapper = ({ col, row, getExpenseTypes }: Props) => {
+const ClientWrapper = ({ col, row, expenseTypes }: Props) => {
   const [addExpense, setAddExpense] = useState(false);
 
   return (
@@ -40,8 +40,8 @@ const ClientWrapper = ({ col, row, getExpenseTypes }: Props) => {
       </div>
 
       <div className="h-[85%] flex gap-4">
-        <div className="w-full flex justify-center items-center">
-          <BudgetAllocator getExpenseTypes={getExpenseTypes} />
+        <div className="w-full border border-white">
+          <BudgetAllocator getExpenseTypes={expenseTypes} />
         </div>
         <div className="w-full rounded-lg overflow-hidden">
           <DataTable columns={col} rows={row} title="Expenses" />

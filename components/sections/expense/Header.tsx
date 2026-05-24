@@ -7,7 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar as CalendarIcon, Plus } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronDown, Plus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 interface Props {
@@ -36,15 +36,13 @@ const Header = ({ addExpense, setAddExpense }: Props) => {
       {/* Calendar */}
       <Popover>
         <PopoverTrigger>
-          <Button
-            variant="secondary"
-            className="h-11 bg-[#0A0A2A] border border-[#2d2760] cursor-pointer hover:bg-[#9889dd]/60"
-          >
+          <div className="flex items-center gap-2 h-11 px-4 bg-[#0A0A2A] border border-[#2d2760] rounded-xl cursor-pointer hover:bg-[#9889dd]/20 transition-colors">
             <CalendarIcon size={16} className="text-[#9889dd]" />
             <span className="text-sm whitespace-nowrap text-white/80">
               {dateLabel}
             </span>
-          </Button>
+            <ChevronDown size={14} className="text-[#9889dd]" />
+          </div>
         </PopoverTrigger>
         <PopoverContent
           className="w-auto p-0 bg-[#13102a] border-[#2d2760]"

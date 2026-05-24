@@ -5,7 +5,7 @@ import { ChevronDown, ChevronUp, Plus, Table2 } from "lucide-react";
 import { projectDropDownItems } from "@/lib/data/projects";
 import { mapToTableFormat } from "@/lib/mappers/projectMappers";
 import { FieldDefinition } from "@/types/TableFields";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import DataTable from "@/components/ui/DataTable";
 import NewTableModal from "@/components/forms/CreateTableForm";
 import AddRow from "@/components/forms/AddRow";

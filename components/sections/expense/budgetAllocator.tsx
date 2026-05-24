@@ -1,175 +1,158 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import { Slider } from "@/components/ui/slider";
-import { HalfDonut } from "@/components/ui/HalfDonut";
-import { Category, GetExpenseTypesResult } from "@/types/ExpenseTracker";
-import { X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import ExpenseTypesModal from "@/components/forms/ExpenseTypeModal";
+import Input from "@/components/ui/Input";
+import { GetExpenseTypesResult, Category } from "@/types/ExpenseTracker";
+import { ChartPie, Plus, Search, Funnel, ChevronDown } from "lucide-react";
+import { PieChart, Pie, Cell, Label } from "recharts";
 
 interface Props {
-  getExpenseTypes: () => Promise<GetExpenseTypesResult>;
+  getExpenseTypes: GetExpenseTypesResult;
 }
 
-const STEP = 100;
+const BudgetAllocator = ({ getExpenseTypes }: Props) => {
+  const categories: Category[] = getExpenseTypes.success
+    ? getExpenseTypes.data
+    : [];
 
-export default function BudgetAllocator({ getExpenseTypes }: Props) {
-  const [isAddRowOpen, setAddRow] = useState(false);
+  const totalAllocated = categories.reduce((sum, t) => sum + 2000, 0);
+  const totalUsed = categories.reduce((sum, t) => sum + 1000, 0);
+  const usedPct =
+    totalAllocated > 0 ? Math.round((totalUsed / totalAllocated) * 100) : 0;
 
-  const [categories, setCategories] = useState<Category[]>([]);
+  const donutData = [{ value: usedPct }, { value: 100 - usedPct }];
 
-  const [values, setValues] = useState<Record<number, number>>({});
-
-  useEffect(() => {
-    async function handleData() {
-      const result = await getExpenseTypes();
-
-      console.log("client data: ", result);
-
-      if (!result.success) {
-        console.error("Failed to fetch expense types:", result.error);
-        return;
-      }
-
-      const fetchedCategories = result.data;
-
-      setCategories(fetchedCategories);
-
-      /**
-       * initialize slider values
-       */
-      const initialValues = Object.fromEntries(
-        fetchedCategories.map((cat) => [cat.id, 0]),
-      ) as Record<number, number>;
-
-      setValues(initialValues);
-    }
-
-    handleData();
-  }, [getExpenseTypes]);
-
-  const monthlySalary = 20000;
-
-  const totalAllocated = useMemo(
-    () => Object.values(values).reduce((a, b) => a + b, 0),
-    [values],
-  );
-
-  const remaining = monthlySalary - totalAllocated;
-
-  const handleChange = (id: number, newValue: number) => {
-    const current = values[id] ?? 0;
-
-    const diff = newValue - current;
-
-    if (diff > remaining) return;
-
-    setValues((prev) => ({
-      ...prev,
-      [id]: newValue,
-    }));
-  };
+  console.log(categories);
 
   return (
-    <div className="relative min-w-xl w-full space-y-6 overflow-scroll bg-[#140F2A] p-4">
-      {/* HALF DONUTS */}
-      <div className="grid grid-cols-6 gap-4">
-        {categories.map((cat) => {
-          const percent = ((values[cat.id] ?? 0) / monthlySalary) * 100;
-
-          return (
-            <div key={cat.id} className="flex flex-col items-center">
-              <HalfDonut value={percent} color={cat.color} label={cat.label} />
+    <div className="w-full flex flex-col bg-gradient-to-b from-[#0D0C2F] to-[#070723]">
+      <div className="w-full flex flex-col gap-4 p-4">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-fit flex items-center p-2 rounded-xl bg-[#270386]">
+              <ChartPie color="#C39CFD" size={20} />
             </div>
-          );
-        })}
-      </div>
-
-      {/* SLIDERS */}
-      <div className="h-60 w-full space-y-4 overflow-scroll">
-        {categories.map((cat) => {
-          const percent = ((values[cat.id] ?? 0) / monthlySalary) * 100;
-
-          return (
-            <div key={cat.id} className="space-y-1">
-              <div className="flex justify-between text-sm">
-                <span style={{ color: cat.color }}>{cat.label}</span>
-
-                <span className="text-white/70">
-                  {percent.toFixed(0)}% · ₱
-                  {(values[cat.id] ?? 0).toLocaleString()}
-                </span>
-              </div>
-
-              <Slider
-                min={0}
-                max={monthlySalary}
-                step={STEP}
-                value={[values[cat.id] ?? 0]}
-                onValueChange={(val) =>
-                  handleChange(cat.id, Array.isArray(val) ? val[0] : val)
-                }
-                color=""
-                className="w-full"
-              />
-
-              <div
-                className="-mt-2 h-1.5 rounded-full"
-                style={{
-                  backgroundColor: cat.color,
-                }}
-              />
-            </div>
-          );
-        })}
-      </div>
-
-      {/* TOTAL */}
-      <div className="border-t border-white/10 pt-4">
-        <div className="flex justify-between text-sm text-white/70">
-          <span>Total Allocated</span>
-
-          <span>{((totalAllocated / monthlySalary) * 100).toFixed(0)}%</span>
+            <span className="text-nowrap text-white text-[18px] font-bold">
+              Budget Categories
+            </span>
+          </div>
+          <Button
+            variant="secondary"
+            className="h-11 bg-[#0A0A2A] border border-[#2d2760] cursor-pointer hover:bg-[#9889dd]/60"
+          >
+            <Plus color="#FFFFFF" size={16} />
+            <span className="text-sm whitespace-nowrap text-white/80">
+              Add Category
+            </span>
+          </Button>
         </div>
 
-        <div className="mt-2 overflow-hidden rounded-full bg-[#2A2047]">
-          <div
-            className="h-2 bg-green-400"
-            style={{
-              width: `${(totalAllocated / monthlySalary) * 100}%`,
-            }}
-          />
-        </div>
-      </div>
-
-      {/* ACTION BUTTONS */}
-      <div className="flex justify-end p-4">
-        <Button
-          onClick={() => setAddRow((prev) => !prev)}
-          className="w-30 text-medium"
-        >
-          Edit Rows
-        </Button>
-      </div>
-
-      {/* FORM */}
-      {isAddRowOpen && (
-        <div className="absolute inset-20 z-40 border border-[#9146EA] bg-[#140F2A] p-4 overflow-hidden">
-          <div className="flex justify-end">
-            <Button
-              onClick={() => setAddRow((prev) => !prev)}
-              className="flex h-14 w-14 items-center justify-center rounded-full border border-white/50 text-white transition hover:bg-white/10"
-            >
-              <X size={26} />
-            </Button>
+        {/* Stats row */}
+        <div className="w-full flex items-center p-3 rounded-lg border border-[#261F52] bg-[#0F0E37]">
+          {/* Total Allocated */}
+          <div className="flex-1">
+            <p className="text-[#C089FD]/80 text-[12px] font-medium">
+              Total Allocated
+            </p>
+            <p className="text-white text-[16px] font-semibold">
+              ₱{totalAllocated.toLocaleString()}
+            </p>
           </div>
 
-          <div className="relative h-full w-full">
-            <ExpenseTypesModal initialData={categories} />
+          {/* Donut */}
+          <div className="relative w-[64px] h-[64px] flex items-center justify-center shrink-0">
+            <PieChart width={64} height={64}>
+              <defs>
+                <linearGradient id="donutGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#a855f7" />
+                  <stop offset="100%" stopColor="#7c3aed" />
+                </linearGradient>
+              </defs>
+              <Pie
+                data={donutData}
+                cx="50%"
+                cy="50%"
+                innerRadius={22}
+                outerRadius={30}
+                startAngle={90}
+                endAngle={-270}
+                dataKey="value"
+                strokeWidth={0}
+              >
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            style={{
+                              fill: "white",
+                              fontSize: "13px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {usedPct}%
+                          </tspan>
+                        </text>
+                      );
+                    }
+                  }}
+                />
+                <Cell fill="url(#donutGrad)" />{" "}
+                {/* ← direct hex/url, not CSS var */}
+                <Cell fill="#1e1a40" />
+              </Pie>
+            </PieChart>
+          </div>
+
+          {/* Total Used */}
+          <div className="flex-1 text-right">
+            <p className="text-[#C089FD]/80 text-[12px] font-medium">
+              Total Used
+            </p>
+            <p className="text-white text-[16px] font-semibold">
+              ₱{totalUsed.toLocaleString()}
+            </p>
           </div>
         </div>
-      )}
+
+        {/* Search row */}
+        <div className="w-full flex justify-between">
+          <div className="w-[50%]">
+            <Input
+              placeholder="Search Project"
+              icon={<Search size={18} />}
+              iconPosition="right"
+              size="md"
+            />
+          </div>
+
+          <Button
+            variant="secondary"
+            className="h-11 bg-[#0A0A2A] border border-[#2d2760] cursor-pointer hover:bg-[#9889dd]/60"
+          >
+            <Funnel color="#FFFFFF" size={16} />
+            <span className="text-sm whitespace-nowrap text-white/80 mr-4">
+              All
+            </span>
+            <ChevronDown color="#FFFFFF" size={12} />
+          </Button>
+        </div>
+        {/* Error state */}
+        {!getExpenseTypes.success && (
+          <p className="text-red-400 text-sm">{getExpenseTypes.error}</p>
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default BudgetAllocator;
