@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -10,7 +10,12 @@ import {
 import { Calendar as CalendarIcon, Plus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
-const Header = () => {
+interface Props {
+  addExpense: Boolean;
+  setAddExpense: Dispatch<SetStateAction<boolean>>;
+}
+
+const Header = ({ addExpense, setAddExpense }: Props) => {
   const now = new Date();
   const [month, setMonth] = useState<Date>(
     new Date(now.getFullYear(), now.getMonth(), 1),
@@ -28,11 +33,12 @@ const Header = () => {
 
   return (
     <div className="flex justify-end items-center gap-3 ml-auto">
+      {/* Calendar */}
       <Popover>
         <PopoverTrigger>
           <Button
             variant="secondary"
-            className="h-11 bg-[#0A0A2A] border border-[#2d2760]"
+            className="h-11 bg-[#0A0A2A] border border-[#2d2760] cursor-pointer hover:bg-[#9889dd]/60"
           >
             <CalendarIcon size={16} className="text-[#9889dd]" />
             <span className="text-sm whitespace-nowrap text-white/80">
@@ -54,8 +60,9 @@ const Header = () => {
       </Popover>
 
       <Button
+        onClick={() => setAddExpense((prev) => !prev)}
         variant={"default"}
-        className="h-11 bg-[#670DF6] hover:opacity-90"
+        className="h-11 bg-[#670DF6] cursor-pointer hover:bg-[#670DF6]/50"
       >
         <Plus size={16} />
         Add Expense

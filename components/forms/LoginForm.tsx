@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Input from "../ui/Input";
-import Button from "../ui/Button";
+import { Button } from "../ui/Button";
 import { login } from "@/app/actions/auth";
 
 export default function LoginForm() {

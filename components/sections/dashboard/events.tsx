@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { SquarePlus } from "lucide-react";
 import { dashboardCalendarData, dotColor } from "@/lib/data/calendar";
 import { getTomorrow, isSameDay } from "@/lib/utils";
