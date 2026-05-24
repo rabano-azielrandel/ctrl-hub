@@ -5,7 +5,7 @@ import { Slider } from "@/components/ui/slider";
 import { HalfDonut } from "@/components/ui/HalfDonut";
 import { Category, GetExpenseTypesResult } from "@/types/ExpenseTracker";
 import { X } from "lucide-react";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import ExpenseTypesModal from "@/components/forms/ExpenseTypeModal";
 
 interface Props {

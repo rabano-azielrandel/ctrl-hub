@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { GripVertical, Trash2, Plus } from "lucide-react";
 
-import Button from "../ui/Button";
+import { Button } from "../ui/Button";
 import Input from "../ui/Input";
 
 export type Category = {

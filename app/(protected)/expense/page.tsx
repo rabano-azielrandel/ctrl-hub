@@ -1,8 +1,10 @@
-import { summaryCards, borderColors } from "@/lib/data/expenseTracker";
+import { DefaultCards } from "@/lib/data/expenseTracker";
 import { getExpenses, getExpenseTypes } from "@/app/actions/expense";
+import { SummaryCards } from "@/components/sections/expense/SummaryCards";
+import { mapToTableFormat } from "@/lib/mappers/projectMappers";
 import BudgetAllocator from "@/components/sections/expense/budgetAllocator";
 import DataTable from "@/components/ui/DataTable";
-import { mapToTableFormat } from "@/lib/mappers/projectMappers";
+import Header from "@/components/sections/expense/Header";
 
 export default async function ExpenseTracker() {
   const result = await getExpenses();
@@ -15,27 +17,25 @@ export default async function ExpenseTracker() {
 
   return (
     <div className="h-screen flex flex-col gap-4 p-4 bg-[#100D17]">
+      {/* Header */}
+      <div className="w-full">
+        <Header />
+      </div>
       {/* Summary */}
-      <div className="h-[15%] flex gap-4 p-4">
-        {summaryCards.map((item, index) => (
-          <div
+      <div className="flex justify-between items-center">
+        {DefaultCards.map((card, index) => (
+          <SummaryCards
             key={index}
-            className="relative w-40 flex flex-col justify-center items-center rounded-lg border border-[#7b6fa0] bg-[#17112A] overflow-hidden"
-          >
-            <div
-              className={`absolute top-0 w-full rounded-lg border-1 ${borderColors[index]}`}
-            />
-
-            <h3 className="h-10 flex items-center text-[#7b6fa0] text-center text-sm font-medium leading-tight">
-              {item.title.toUpperCase()}
-            </h3>
-
-            <p className="text-[#F7F7F7] text-center text-sm font-medium">
-              ₱{item.amount}
-            </p>
-          </div>
+            label={card.label}
+            color={card.color}
+            icon={card.icon}
+            total={card.total}
+            desc={card.desc}
+            index={index}
+          />
         ))}
       </div>
+
       <div className="h-[85%] flex gap-4">
         <div className="w-full flex justify-center items-center">
           <BudgetAllocator getExpenseTypes={getExpenseTypes} />
