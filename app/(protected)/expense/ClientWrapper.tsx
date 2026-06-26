@@ -6,8 +6,10 @@ import { SummaryCards } from "@/components/sections/expense/SummaryCards";
 import BudgetAllocator from "@/components/sections/expense/budgetAllocator";
 import DataTable from "@/components/ui/DataTable";
 import Header from "@/components/sections/expense/Header";
+import AddExpenseModal from "@/components/forms/AddExpenseModal";
 import { Column, RowData } from "@/types/DataTable";
 import { GetExpenseTypesResult } from "@/types/ExpenseTracker";
+import { createExpense } from "@/app/actions/expense";
 
 interface Props {
   col: Column[];
@@ -18,8 +20,10 @@ interface Props {
 const ClientWrapper = ({ col, row, expenseTypes }: Props) => {
   const [addExpense, setAddExpense] = useState(false);
 
+  const categories = expenseTypes.success ? expenseTypes.data : [];
+
   return (
-    <div className="h-screen flex flex-col gap-4 p-4 bg-[#100D17]">
+    <div className="relative h-screen flex flex-col gap-4 p-4 bg-[#100D17]">
       {/* Header */}
       <div className="w-full">
         <Header addExpense={addExpense} setAddExpense={setAddExpense} />
@@ -47,6 +51,14 @@ const ClientWrapper = ({ col, row, expenseTypes }: Props) => {
           <DataTable columns={col} rows={row} title="Expenses" />
         </div>
       </div>
+
+      {addExpense && (
+        <AddExpenseModal
+          categories={categories}
+          onClose={() => setAddExpense(false)}
+          onSubmit={createExpense}
+        />
+      )}
     </div>
   );
 };

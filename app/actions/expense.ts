@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { expenseColors } from "@/lib/data/expenseTracker";
 import {
@@ -43,6 +44,39 @@ export async function getExpenseTypes(): Promise<GetExpenseTypesResult> {
     success: true,
     data: categories,
   };
+}
+
+export async function createExpense(data: {
+  expense_type_id: number;
+  amount: number;
+  expense_date: string;
+  note: string | null;
+}): Promise<{ success: boolean; error?: string }> {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  const { error } = await supabase.from("expenses").insert({
+    auth_id: user.id,
+    expense_type_id: data.expense_type_id,
+    amount: data.amount,
+    expense_date: data.expense_date,
+    note: data.note,
+  });
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath("/expense");
+  return { success: true };
 }
 
 export async function getExpenses(): Promise<GetExpensesResult> {
