@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { GetExpenseTypesResult, Category } from "@/types/ExpenseTracker";
@@ -15,18 +16,22 @@ const BudgetAllocator = ({ getExpenseTypes }: Props) => {
     ? getExpenseTypes.data
     : [];
 
-  const totalAllocated = categories.reduce((sum, t) => sum + 2000, 0);
-  const totalUsed = categories.reduce((sum, t) => sum + 1000, 0);
+  const [search, setSearch] = useState("");
+
+  const filteredCategories = categories.filter((cat) =>
+    cat.label.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  const totalAllocated = categories.reduce((sum) => sum + 2000, 0);
+  const totalUsed = categories.reduce((sum) => sum + 1000, 0);
   const usedPct =
     totalAllocated > 0 ? Math.round((totalUsed / totalAllocated) * 100) : 0;
 
   const donutData = [{ value: usedPct }, { value: 100 - usedPct }];
 
-  console.log(categories);
-
   return (
-    <div className="w-full flex flex-col bg-gradient-to-b from-[#0D0C2F] to-[#070723]">
-      <div className="w-full flex flex-col gap-4 p-4">
+    <div className="w-full flex flex-col bg-gradient-to-b from-[#0D0C2F] to-[#070723] rounded-2xl">
+      <div className="w-full h-full max-h-[650px] flex flex-col gap-4 p-4">
         {/* Header */}
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -128,10 +133,12 @@ const BudgetAllocator = ({ getExpenseTypes }: Props) => {
         <div className="w-full flex justify-between">
           <div className="w-[50%]">
             <Input
-              placeholder="Search Project"
+              placeholder="Search Category"
               icon={<Search size={18} />}
               iconPosition="right"
               size="md"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
@@ -146,6 +153,64 @@ const BudgetAllocator = ({ getExpenseTypes }: Props) => {
             <ChevronDown color="#FFFFFF" size={12} />
           </Button>
         </div>
+
+        {/* Categories list */}
+        <div className="flex flex-col gap-2 overflow-y-auto">
+          {filteredCategories.length === 0 ? (
+            <p className="text-white/40 text-sm text-center py-6">
+              No categories found
+            </p>
+          ) : (
+            filteredCategories.map((cat) => {
+              const allocated = 2000;
+              const used = 1000;
+              const pct = Math.round((used / allocated) * 100);
+              return (
+                <div
+                  key={cat.id}
+                  className="flex items-center gap-3 p-3 rounded-lg border border-[#261F52] bg-[#0F0E37]"
+                >
+                  <div
+                    className="w-3 h-3 rounded-full shrink-0"
+                    style={{ backgroundColor: cat.color }}
+                  />
+                  <span className="flex-1 text-white text-sm font-medium truncate">
+                    {cat.label}
+                  </span>
+                  <div className="flex items-center gap-4">
+                    <div className="text-right">
+                      <p className="text-[#C089FD]/60 text-[10px]">Allocated</p>
+                      <p className="text-white text-xs font-semibold">
+                        ₱{allocated.toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[#C089FD]/60 text-[10px]">Used</p>
+                      <p className="text-white text-xs font-semibold">
+                        ₱{used.toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="w-16">
+                      <div className="w-full h-1.5 rounded-full bg-[#1e1a40] overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all"
+                          style={{
+                            width: `${pct}%`,
+                            backgroundColor: cat.color,
+                          }}
+                        />
+                      </div>
+                      <p className="text-white/40 text-[10px] text-right mt-0.5">
+                        {pct}%
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
         {/* Error state */}
         {!getExpenseTypes.success && (
           <p className="text-red-400 text-sm">{getExpenseTypes.error}</p>

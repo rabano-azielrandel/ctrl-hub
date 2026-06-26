@@ -40,7 +40,7 @@ const ClientWrapper = ({ col, row, expenseTypes }: Props) => {
       </div>
 
       <div className="h-[85%] flex gap-4">
-        <div className="w-full border border-white">
+        <div className="w-full">
           <BudgetAllocator getExpenseTypes={expenseTypes} />
         </div>
         <div className="w-full rounded-lg overflow-hidden">
