@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, DollarSign } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { Category } from "@/types/ExpenseTracker";
@@ -124,7 +124,7 @@ export default function AddExpenseModal({ categories, onClose, onSubmit }: Props
             placeholder="0.00"
             value={form.amount}
             onChange={(e) => set("amount", e.target.value)}
-            icon={<DollarSign size={16} />}
+            icon={<span className="text-sm leading-none">₱</span>}
             iconPosition="left"
           />
 

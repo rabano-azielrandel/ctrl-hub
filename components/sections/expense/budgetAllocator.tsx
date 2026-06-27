@@ -31,7 +31,7 @@ const BudgetAllocator = ({ getExpenseTypes }: Props) => {
 
   return (
     <div className="w-full flex flex-col bg-gradient-to-b from-[#0D0C2F] to-[#070723] rounded-2xl">
-      <div className="w-full h-full max-h-[650px] flex flex-col gap-4 p-4">
+      <div className="w-full h-[650px] max-h-[650px] flex flex-col gap-4 p-4">
         {/* Header */}
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
