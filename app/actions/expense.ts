@@ -156,7 +156,6 @@ export async function getExpenses(): Promise<GetExpensesResult> {
 
   const formattedExpenses: Expenses[] =
     expenses?.map((expense) => ({
-      id: expense.expense_id,
       expense_type_name: expense.expense_types?.name ?? null,
       amount: expense.amount,
       note: expense.note,
