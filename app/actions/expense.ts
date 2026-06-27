@@ -94,7 +94,16 @@ export async function getExpenses(): Promise<GetExpensesResult> {
     };
   }
 
-  const { data: expenses, error } = await supabase
+  type RawExpense = {
+    expense_id: number;
+    expense_type_id: number;
+    amount: number;
+    note: string | null;
+    expense_date: string;
+    expense_types: { name: string } | null;
+  };
+
+  const { data: rawExpenses, error } = await supabase
     .from("expenses")
     .select(
       `
@@ -103,12 +112,12 @@ export async function getExpenses(): Promise<GetExpensesResult> {
       amount,
       note,
       expense_date,
-      expense_types (
-        name
-      )
+      expense_types(name)
     `,
     )
     .eq("auth_id", user.id);
+
+  const expenses = rawExpenses as unknown as RawExpense[] | null;
 
   if (error) {
     return {
@@ -120,7 +129,7 @@ export async function getExpenses(): Promise<GetExpensesResult> {
   const formattedExpenses: Expenses[] =
     expenses?.map((expense) => ({
       id: expense.expense_id,
-      expense_name: expense.expense_types?.[0]?.name ?? "Unknown",
+      expense_type_name: expense.expense_types?.name ?? null,
       amount: expense.amount,
       note: expense.note,
       expense_date: new Date(expense.expense_date).toLocaleDateString("en-US", {

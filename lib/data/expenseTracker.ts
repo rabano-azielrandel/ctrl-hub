@@ -15,6 +15,12 @@ import {
   ArrowUpCircle,
   ArrowDownCircle,
   CircleDollarSign,
+  HeartHandshake,
+  Wifi,
+  ShoppingCart,
+  User,
+  Tag,
+  type LucideIcon,
 } from "lucide-react";
 
 export const expenseColors = [
@@ -53,6 +59,19 @@ export const ICON_MAP = {
 };
 
 export type IconKey = keyof typeof ICON_MAP;
+
+const EXPENSE_TYPE_MATCHERS: { keyword: string; icon: LucideIcon }[] = [
+  { keyword: "savings",  icon: PiggyBank      },
+  { keyword: "tithe",    icon: HeartHandshake  },
+  { keyword: "wifi",     icon: Wifi            },
+  { keyword: "gasul",    icon: ShoppingCart    },
+  { keyword: "personal", icon: User            },
+];
+
+export function getExpenseTypeIcon(name: string): LucideIcon {
+  const lower = name.toLowerCase();
+  return EXPENSE_TYPE_MATCHERS.find((m) => lower.includes(m.keyword))?.icon ?? Tag;
+}
 
 interface DefaultEntry {
   label: string;

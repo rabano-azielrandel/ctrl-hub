@@ -11,7 +11,7 @@ export type Category = {
 
 export type Expenses = {
   id: number;
-  expense_name: string;
+  expense_type_name: string | null;
   amount: number;
   note: string | null;
   expense_date: string;

@@ -13,9 +13,11 @@ import { Button } from "@/components/ui/Button";
 interface Props {
   addExpense: Boolean;
   setAddExpense: Dispatch<SetStateAction<boolean>>;
+  addIncome: Boolean;
+  setAddIncome: Dispatch<SetStateAction<boolean>>;
 }
 
-const Header = ({ addExpense, setAddExpense }: Props) => {
+const Header = ({ addExpense, setAddExpense, addIncome, setAddIncome }: Props) => {
   const now = new Date();
   const [month, setMonth] = useState<Date>(
     new Date(now.getFullYear(), now.getMonth(), 1),
@@ -56,6 +58,15 @@ const Header = ({ addExpense, setAddExpense }: Props) => {
           />
         </PopoverContent>
       </Popover>
+
+      <Button
+        onClick={() => setAddIncome((prev) => !prev)}
+        variant={"default"}
+        className="h-11 bg-emerald-600 cursor-pointer hover:bg-emerald-600/50"
+      >
+        <Plus size={16} />
+        Add Income
+      </Button>
 
       <Button
         onClick={() => setAddExpense((prev) => !prev)}

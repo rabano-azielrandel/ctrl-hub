@@ -62,9 +62,11 @@ export default function DataTable({ title, columns, rows }: DataTableProps) {
                   `}
                 >
                   {columns.map((col) => {
-                    const value = formatValue(row[col.key]);
+                    const raw = String(row[col.key] ?? "");
+                    const content = col.render
+                      ? col.render(raw)
+                      : formatValue(row[col.key]);
 
-                    // only clamp long-text fields
                     const shouldClamp =
                       col.key === "system_desc" || col.key === "note";
 
@@ -72,7 +74,7 @@ export default function DataTable({ title, columns, rows }: DataTableProps) {
                       <td
                         key={col.key}
                         className="px-4 py-3 text-sm text-white align-top max-w-[220px]"
-                        title={String(value)}
+                        title={col.render ? raw : String(row[col.key] ?? "")}
                       >
                         <div
                           className={`
@@ -81,7 +83,7 @@ export default function DataTable({ title, columns, rows }: DataTableProps) {
                             text-gray-300
                           `}
                         >
-                          {value}
+                          {content}
                         </div>
                       </td>
                     );

@@ -14,6 +14,7 @@ export type Column = {
   key: string;
   label: string;
   width?: string;
+  render?: (value: string) => React.ReactNode;
 };
 
 export type DataTableProps = {
