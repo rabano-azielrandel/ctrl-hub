@@ -61,16 +61,18 @@ export const ICON_MAP = {
 export type IconKey = keyof typeof ICON_MAP;
 
 const EXPENSE_TYPE_MATCHERS: { keyword: string; icon: LucideIcon }[] = [
-  { keyword: "savings",  icon: PiggyBank      },
-  { keyword: "tithe",    icon: HeartHandshake  },
-  { keyword: "wifi",     icon: Wifi            },
-  { keyword: "gasul",    icon: ShoppingCart    },
-  { keyword: "personal", icon: User            },
+  { keyword: "savings", icon: PiggyBank },
+  { keyword: "tithe", icon: HeartHandshake },
+  { keyword: "wifi", icon: Wifi },
+  { keyword: "gasul", icon: ShoppingCart },
+  { keyword: "personal", icon: User },
 ];
 
 export function getExpenseTypeIcon(name: string): LucideIcon {
   const lower = name.toLowerCase();
-  return EXPENSE_TYPE_MATCHERS.find((m) => lower.includes(m.keyword))?.icon ?? Tag;
+  return (
+    EXPENSE_TYPE_MATCHERS.find((m) => lower.includes(m.keyword))?.icon ?? Tag
+  );
 }
 
 interface DefaultEntry {
@@ -104,10 +106,10 @@ export const DefaultCards: DefaultEntry[] = [
     desc: "↑ 50.00% vs last month",
   },
   {
-    label: "Expense Entries",
+    label: "Remaining Balance",
     color: "#EC4899",
     icon: "file",
-    total: "1",
+    total: "1000",
     desc: "This month",
   },
 ];

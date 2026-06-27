@@ -1,14 +1,17 @@
 import { getExpenses, getExpenseTypes } from "@/app/actions/expense";
 import { getIncomeTypes } from "@/app/actions/income";
+import { getSummary } from "@/app/actions/summary";
 import { mapToTableFormat } from "@/lib/mappers/projectMappers";
 import ClientWrapper from "./ClientWrapper";
 
 export default async function ExpenseTracker() {
-  const [expenseResult, expenseTypesResult, incomeTypesResult] = await Promise.all([
-    getExpenses(),
-    getExpenseTypes(),
-    getIncomeTypes(),
-  ]);
+  const [expenseResult, expenseTypesResult, incomeTypesResult, summaryResult] =
+    await Promise.all([
+      getExpenses(),
+      getExpenseTypes(),
+      getIncomeTypes(),
+      getSummary(),
+    ]);
 
   if (!expenseResult.success) throw new Error(expenseResult.error);
 
@@ -21,6 +24,7 @@ export default async function ExpenseTracker() {
         row={rows}
         expenseTypes={expenseTypesResult}
         incomeTypes={incomeTypesResult}
+        summary={summaryResult}
       />
     </div>
   );

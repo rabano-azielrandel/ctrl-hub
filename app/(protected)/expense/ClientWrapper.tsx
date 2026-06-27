@@ -13,15 +13,28 @@ import { GetIncomeTypesResult } from "@/types/IncomeTracker";
 import { createExpense } from "@/app/actions/expense";
 import { createIncome } from "@/app/actions/income";
 import AddIncomeModal from "@/components/forms/AddIncomeModal";
+import { GetSummaryResult } from "@/app/actions/summary";
 
 interface Props {
   col: Column[];
   row: RowData[];
   expenseTypes: GetExpenseTypesResult;
   incomeTypes: GetIncomeTypesResult;
+  summary: GetSummaryResult;
 }
 
-const ClientWrapper = ({ col, row, expenseTypes, incomeTypes }: Props) => {
+function fmtPeso(amount: number) {
+  return `₱${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function fmtChange(current: number, last: number) {
+  if (last === 0) return "";
+  const pct = ((current - last) / last) * 100;
+  const arrow = pct >= 0 ? "↑" : "↓";
+  return `${arrow} ${Math.abs(pct).toFixed(2)}% vs last month`;
+}
+
+const ClientWrapper = ({ col, row, expenseTypes, incomeTypes, summary }: Props) => {
   const [addExpense, setAddExpense] = useState(false);
   const [addIncome, setAddIncome] = useState(false);
 
@@ -57,17 +70,29 @@ const ClientWrapper = ({ col, row, expenseTypes, incomeTypes }: Props) => {
       </div>
       {/* Summary */}
       <div className="flex justify-between items-center">
-        {DefaultCards.map((card, index) => (
-          <SummaryCards
-            key={index}
-            label={card.label}
-            color={card.color}
-            icon={card.icon}
-            total={card.total}
-            desc={card.desc}
-            index={index}
-          />
-        ))}
+        {DefaultCards.map((card, index) => {
+          const s = summary.success ? summary.data : null;
+          const dynamic = s
+            ? [
+                { total: fmtPeso(s.monthlySalary), desc: "" },
+                { total: fmtPeso(s.totalSpent), desc: fmtChange(s.totalSpent, s.totalSpentLastMonth) },
+                { total: fmtPeso(s.savings), desc: fmtChange(s.savings, s.savingsLastMonth) },
+                { total: fmtPeso(s.remainingBalance), desc: "This month" },
+              ][index]
+            : null;
+
+          return (
+            <SummaryCards
+              key={index}
+              label={card.label}
+              color={card.color}
+              icon={card.icon}
+              total={dynamic?.total ?? card.total}
+              desc={dynamic?.desc ?? card.desc}
+              index={index}
+            />
+          );
+        })}
       </div>
 
       <div className="h-[85%] flex gap-4">
