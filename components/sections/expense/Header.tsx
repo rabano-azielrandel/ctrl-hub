@@ -19,9 +19,24 @@ interface Props {
   onMonthChange: (month: Date) => void;
 }
 
-const Header = ({ addExpense, setAddExpense, addIncome, setAddIncome, selectedMonth, onMonthChange }: Props) => {
-  const firstDay = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), 1);
-  const lastDay = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 0);
+const Header = ({
+  addExpense,
+  setAddExpense,
+  addIncome,
+  setAddIncome,
+  selectedMonth,
+  onMonthChange,
+}: Props) => {
+  const firstDay = new Date(
+    selectedMonth.getFullYear(),
+    selectedMonth.getMonth(),
+    1,
+  );
+  const lastDay = new Date(
+    selectedMonth.getFullYear(),
+    selectedMonth.getMonth() + 1,
+    0,
+  );
 
   const fmt = new Intl.DateTimeFormat("en-US", {
     month: "long",
@@ -31,7 +46,7 @@ const Header = ({ addExpense, setAddExpense, addIncome, setAddIncome, selectedMo
   const dateLabel = `${fmt.format(firstDay)} – ${fmt.format(lastDay)}`;
 
   return (
-    <div className="flex justify-end items-center gap-3 ml-auto">
+    <div className="flex flex-wrap justify-center lg:justify-end items-center gap-2 ml-auto">
       {/* Calendar */}
       <Popover>
         <PopoverTrigger>

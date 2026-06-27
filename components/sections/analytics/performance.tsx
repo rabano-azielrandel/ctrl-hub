@@ -12,9 +12,9 @@ export default function Performance() {
     <div className="p-4 border border-[#B67DF2]">
       <p className="text-[#B67DF2]">PERFORMANCE TARGETS {engagement}</p>
 
-      <div className="flex">
+      <div className="flex flex-col sm:flex-row">
         {/* Slider */}
-        <div className="relative flex flex-col w-[50%] bg-amber-50">
+        <div className="relative flex flex-col w-full sm:w-[50%] bg-amber-50">
           <Slider
             value={[engagement]}
             onValueChange={(value) =>
@@ -27,7 +27,7 @@ export default function Performance() {
           />
         </div>
 
-        <div className="relative flex flex-col w-[50%] bg-amber-50">
+        <div className="relative flex flex-col w-full sm:w-[50%] bg-amber-50">
           <Slider
             value={[engagement]}
             onValueChange={(value) =>

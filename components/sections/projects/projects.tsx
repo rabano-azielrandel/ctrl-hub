@@ -49,7 +49,7 @@ export function ProjectPanel({ project }: Props) {
                   className="w-2 h-2 rounded-full shadow-md"
                   style={{ backgroundColor: projectPanelData[index] }}
                 />
-                <p className="text-[#b67df2] text-sm text-nowrap">
+                <p className="text-[#b67df2] text-sm">
                   {item.name}
                 </p>
               </div>

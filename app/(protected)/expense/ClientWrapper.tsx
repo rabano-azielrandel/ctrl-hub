@@ -13,7 +13,11 @@ import { GetExpenseTypesResult } from "@/types/ExpenseTracker";
 import { GetIncomeTypesResult } from "@/types/IncomeTracker";
 import { createExpense } from "@/app/actions/expense";
 import { createIncome } from "@/app/actions/income";
-import { getSummary, GetSummaryResult, SummaryData } from "@/app/actions/summary";
+import {
+  getSummary,
+  GetSummaryResult,
+  SummaryData,
+} from "@/app/actions/summary";
 
 interface Props {
   col: Column[];
@@ -34,7 +38,13 @@ function fmtChange(current: number, last: number) {
   return `${arrow} ${Math.abs(pct).toFixed(2)}% vs last month`;
 }
 
-const ClientWrapper = ({ col, row, expenseTypes, incomeTypes, summary }: Props) => {
+const ClientWrapper = ({
+  col,
+  row,
+  expenseTypes,
+  incomeTypes,
+  summary,
+}: Props) => {
   const now = new Date();
 
   const [addExpense, setAddExpense] = useState(false);
@@ -74,14 +84,23 @@ const ClientWrapper = ({ col, row, expenseTypes, incomeTypes, summary }: Props) 
   const cardDynamic = summaryData
     ? [
         { total: fmtPeso(summaryData.monthlySalary), desc: "" },
-        { total: fmtPeso(summaryData.totalSpent), desc: fmtChange(summaryData.totalSpent, summaryData.totalSpentLastMonth) },
-        { total: fmtPeso(summaryData.savings), desc: fmtChange(summaryData.savings, summaryData.savingsLastMonth) },
+        {
+          total: fmtPeso(summaryData.totalSpent),
+          desc: fmtChange(
+            summaryData.totalSpent,
+            summaryData.totalSpentLastMonth,
+          ),
+        },
+        {
+          total: fmtPeso(summaryData.savings),
+          desc: fmtChange(summaryData.savings, summaryData.savingsLastMonth),
+        },
         { total: fmtPeso(summaryData.remainingBalance), desc: "This month" },
       ]
     : null;
 
   return (
-    <div className="relative h-screen flex flex-col gap-4 p-4 bg-[#100D17]">
+    <div className="relative flex flex-col gap-4 p-4 bg-[#100D17]">
       <div className="w-full">
         <Header
           addExpense={addExpense}
@@ -93,7 +112,7 @@ const ClientWrapper = ({ col, row, expenseTypes, incomeTypes, summary }: Props) 
         />
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap justify-between items-stretch gap-3">
         {DefaultCards.map((card, index) => (
           <SummaryCards
             key={index}
@@ -107,8 +126,8 @@ const ClientWrapper = ({ col, row, expenseTypes, incomeTypes, summary }: Props) 
         ))}
       </div>
 
-      <div className="h-[85%] flex gap-4">
-        <div className="w-full">
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="w-full lg:w-1/2">
           <BudgetAllocator
             getExpenseTypes={expenseTypes}
             categoryBreakdown={summaryData?.categoryBreakdown ?? []}
@@ -116,7 +135,7 @@ const ClientWrapper = ({ col, row, expenseTypes, incomeTypes, summary }: Props) 
             totalIncome={summaryData?.monthlySalary ?? 0}
           />
         </div>
-        <div className="w-full rounded-lg overflow-hidden">
+        <div className="w-full lg:w-1/2 rounded-lg overflow-hidden">
           <DataTable columns={enrichedColumns} rows={row} title="Expenses" />
         </div>
       </div>

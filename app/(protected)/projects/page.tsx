@@ -12,14 +12,16 @@ const projectPanelData = await getProjects();
 
 export default function Projects() {
   return (
-    <div className="flex">
+    <div className="flex h-full overflow-hidden">
       <Main
         getProjectsRows={getProjectsRows}
         getProjectsCardRows={getProjectsCardRows}
         createTable={createTable}
         addRow={addRow}
       />
-      <ProjectPanel project={projectPanelData} />
+      <div className="hidden lg:block shrink-0">
+        <ProjectPanel project={projectPanelData} />
+      </div>
     </div>
   );
 }

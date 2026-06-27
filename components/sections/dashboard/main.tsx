@@ -116,8 +116,8 @@ export default function Main() {
   return (
     <div className="w-full flex flex-col">
       {/* TOP CLOCK BAR */}
-      <div className="w-full px-12 py-6 bg-[#140c2a] border-b border-purple-900 flex items-center justify-between">
-        <div className="flex items-end gap-2 text-purple-300 font-mono text-2xl">
+      <div className="w-full px-4 sm:px-12 py-4 sm:py-6 bg-[#140c2a] border-b border-purple-900 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-end gap-2 text-purple-300 font-mono text-lg sm:text-2xl">
           <span>{timeParts.hour}</span>
           <span>:</span>
           <span>{timeParts.minute}</span>
@@ -126,7 +126,7 @@ export default function Main() {
           <span className="text-sm ml-2 mb-1">{timeParts.ampm}</span>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 sm:gap-6">
           <div className="flex items-center gap-2 text-sm text-purple-300">
             <span className="text-white/50 tracking-widest">
               {dateParts.weekday}, {dateParts.month}
@@ -144,9 +144,9 @@ export default function Main() {
       </div>
 
       {/* CALENDAR */}
-      <div className="w-full h-full px-12 py-12 bg-[#140c2a]">
+      <div className="w-full h-full px-2 sm:px-8 md:px-12 py-4 sm:py-8 md:py-12 bg-[#140c2a]">
         {/* HEADER */}
-        <div className="flex items-center justify-between px-6 pb-6">
+        <div className="flex items-center justify-between px-2 sm:px-6 pb-4 sm:pb-6">
           <div className="flex items-center gap-3">
             <button
               onClick={prevMonth}
@@ -178,11 +178,11 @@ export default function Main() {
         </div>
 
         {/* WEEKDAYS */}
-        <div className="grid grid-cols-7 px-6 pb-6">
+        <div className="grid grid-cols-7 px-2 sm:px-6 pb-3 sm:pb-6">
           {weekdays.map((day) => (
             <div
               key={day}
-              className="text-center text-[14px] tracking-[0.2em] text-violet-300/60"
+              className="text-center text-[11px] sm:text-[14px] tracking-[0.1em] sm:tracking-[0.2em] text-violet-300/60"
             >
               {day}
             </div>
@@ -190,7 +190,7 @@ export default function Main() {
         </div>
 
         {/* GRID */}
-        <div className="grid grid-cols-7 gap-y-2 px-6 pb-6">
+        <div className="grid grid-cols-7 gap-y-2 px-2 sm:px-6 pb-3 sm:pb-6">
           {cells.map((cell, i) => {
             const isToday =
               cell.currentMonth &&
@@ -205,7 +205,7 @@ export default function Main() {
             return (
               <div
                 key={i}
-                className="relative h-20 flex items-start justify-center pt-2 rounded-2xl border border-transparent hover:border-violet-700/50 transition"
+                className="relative h-14 sm:h-20 flex items-start justify-center pt-2 rounded-2xl border border-transparent hover:border-violet-700/50 transition"
               >
                 {/* DAY NUMBER */}
                 <span

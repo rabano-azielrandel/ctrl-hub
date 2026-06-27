@@ -13,6 +13,7 @@ type InputProps = {
   size?: "sm" | "md" | "lg";
 
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onFocus?: () => void;
   onBlur?: () => void;
 
@@ -50,6 +51,7 @@ export default function Input({
   value,
   placeholder,
   onChange,
+  onKeyDown,
   onFocus,
   onBlur,
   className,
@@ -96,6 +98,7 @@ export default function Input({
           value={value}
           placeholder={placeholder}
           onChange={onChange}
+          onKeyDown={onKeyDown}
           onFocus={(e) => {
             setIsFocused(true);
             onFocus?.();

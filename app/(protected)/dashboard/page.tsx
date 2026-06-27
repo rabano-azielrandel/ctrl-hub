@@ -3,9 +3,11 @@ import Main from "@/components/sections/dashboard/main";
 
 export default function Dashboard() {
   return (
-    <div className="flex">
+    <div className="flex h-full overflow-hidden">
       <Main />
-      <EventsPanel />
+      <div className="hidden lg:block shrink-0">
+        <EventsPanel />
+      </div>
     </div>
   );
 }

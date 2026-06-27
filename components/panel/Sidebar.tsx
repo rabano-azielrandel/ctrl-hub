@@ -13,7 +13,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 h-screen flex flex-col justify-between bg-[#0B1220] text-white p-4">
+    <aside className="hidden md:flex w-64 shrink-0 h-screen flex-col justify-between bg-[#0B1220] text-white p-4">
       {/* TOP */}
       <div>
         {/* Header */}

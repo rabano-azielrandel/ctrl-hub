@@ -119,7 +119,7 @@ export function SummaryCards(props: Props) {
 
   return (
     <div
-      className="relative overflow-hidden rounded-2xl flex flex-col justify-between p-4 min-w-72 min-h-[120px] select-none transition-transform duration-200 hover:-translate-y-0.5"
+      className="relative overflow-hidden rounded-2xl flex flex-col justify-between p-4 flex-1 min-w-[160px] min-h-[120px] select-none transition-transform duration-200 hover:-translate-y-0.5"
       style={{
         background: `
           radial-gradient(ellipse at 0% 0%,    ${color}1A 0%, transparent 55%),

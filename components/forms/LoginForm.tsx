@@ -28,7 +28,7 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="min-w-lg max-w-xl min-h-130 flex flex-col centerX p-10 gap-8 mt-16
+      className="w-full max-w-xl min-h-130 flex flex-col centerX p-6 sm:p-10 gap-8 mt-16
         rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg"
     >
       <div className="flex flex-col items-center gap-2 text-center mb-6">

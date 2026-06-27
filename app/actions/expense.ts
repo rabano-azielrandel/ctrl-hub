@@ -24,7 +24,7 @@ export async function getExpenseTypes(): Promise<GetExpenseTypesResult> {
 
   const { data: expenseType, error: expenseError } = await supabase
     .from("expense_types")
-    .select("expense_type_id, name")
+    .select("expense_type_id, name, icon")
     .eq("auth_id", user.id);
 
   if (expenseError) {
@@ -37,6 +37,7 @@ export async function getExpenseTypes(): Promise<GetExpenseTypesResult> {
   const categories: Category[] = expenseType.map((item, index) => ({
     id: item.expense_type_id,
     label: item.name,
+    icon: item.icon ?? "tag",
     color: expenseColors[index % expenseColors.length],
   }));
 
@@ -44,6 +45,33 @@ export async function getExpenseTypes(): Promise<GetExpenseTypesResult> {
     success: true,
     data: categories,
   };
+}
+
+export async function createExpenseType(
+  name: string,
+  icon: string,
+): Promise<{ success: boolean; error?: string }> {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  const { error } = await supabase
+    .from("expense_types")
+    .insert({ auth_id: user.id, name: name.trim(), icon });
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath("/expense");
+  return { success: true };
 }
 
 export async function createExpense(data: {

@@ -18,7 +18,7 @@ export default async function ExpenseTracker() {
   const { columns, rows } = mapToTableFormat(expenseResult.data);
 
   return (
-    <div className="h-screen flex flex-col gap-4 p-4 bg-[#100D17]">
+    <div className="h-fit lg:h-full flex flex-col gap-4 p-4 bg-[#100D17]">
       <ClientWrapper
         col={columns}
         row={rows}

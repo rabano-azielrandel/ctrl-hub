@@ -79,9 +79,9 @@ export default function Main({
 
   return (
     <div className="relative w-full flex flex-col items-center gap-2 bg-[#140C2A]">
-      <div className="w-full h-20 flex justify-between items-center p-4">
+      <div className="w-full min-h-20 flex flex-wrap justify-between items-center gap-2 p-4">
         {/* Tag and Dropdown */}
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
           {/* Left Tag */}
           <div className="w-24 flex justify-center items-center px-3 py-3 gap-2 rounded-2xl border border-[#B67DF2]">
             <div className="w-2 h-2 rounded-full bg-[#B67DF2]" />
@@ -151,7 +151,7 @@ export default function Main({
         </div>
 
         {/* Add Row Button */}
-        <div className="w-60 flex justify-center items-center px-10 rounded-2xl">
+        <div className="flex justify-center items-center rounded-2xl">
           <Button
             onClick={() => setAddRowState((prev) => !prev)}
             variant="secondary"

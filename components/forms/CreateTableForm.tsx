@@ -105,7 +105,7 @@ export default function NewTableModal({ createTable }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-[600px] p-6 rounded-2xl bg-[#10091d] border border-violet-800/60"
+      className="w-full max-w-[600px] p-6 rounded-2xl bg-[#10091d] border border-violet-800/60"
     >
       {/* Notification */}
       {notification && (
