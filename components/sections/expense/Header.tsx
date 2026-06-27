@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -15,16 +15,13 @@ interface Props {
   setAddExpense: Dispatch<SetStateAction<boolean>>;
   addIncome: Boolean;
   setAddIncome: Dispatch<SetStateAction<boolean>>;
+  selectedMonth: Date;
+  onMonthChange: (month: Date) => void;
 }
 
-const Header = ({ addExpense, setAddExpense, addIncome, setAddIncome }: Props) => {
-  const now = new Date();
-  const [month, setMonth] = useState<Date>(
-    new Date(now.getFullYear(), now.getMonth(), 1),
-  );
-
-  const firstDay = new Date(month.getFullYear(), month.getMonth(), 1);
-  const lastDay = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+const Header = ({ addExpense, setAddExpense, addIncome, setAddIncome, selectedMonth, onMonthChange }: Props) => {
+  const firstDay = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), 1);
+  const lastDay = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 0);
 
   const fmt = new Intl.DateTimeFormat("en-US", {
     month: "long",
@@ -52,8 +49,8 @@ const Header = ({ addExpense, setAddExpense, addIncome, setAddIncome }: Props) =
         >
           <Calendar
             mode="single"
-            month={month}
-            onMonthChange={setMonth}
+            month={selectedMonth}
+            onMonthChange={onMonthChange}
             onSelect={() => {}}
           />
         </PopoverContent>

@@ -10,7 +10,7 @@ export default async function ExpenseTracker() {
       getExpenses(),
       getExpenseTypes(),
       getIncomeTypes(),
-      getSummary(),
+      getSummary(new Date().getFullYear(), new Date().getMonth() + 1),
     ]);
 
   if (!expenseResult.success) throw new Error(expenseResult.error);

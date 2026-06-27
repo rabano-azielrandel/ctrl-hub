@@ -4,30 +4,29 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { GetExpenseTypesResult, Category } from "@/types/ExpenseTracker";
+import { CategorySpend } from "@/app/actions/summary";
 import { ChartPie, Plus, Search, Funnel, ChevronDown } from "lucide-react";
 import { PieChart, Pie, Cell, Label } from "recharts";
 
 interface Props {
   getExpenseTypes: GetExpenseTypesResult;
+  categoryBreakdown: CategorySpend[];
+  totalSpent: number;
+  totalIncome: number;
 }
 
-const BudgetAllocator = ({ getExpenseTypes }: Props) => {
-  const categories: Category[] = getExpenseTypes.success
-    ? getExpenseTypes.data
-    : [];
-
+const BudgetAllocator = ({ getExpenseTypes, categoryBreakdown, totalSpent, totalIncome }: Props) => {
+  const categories: Category[] = getExpenseTypes.success ? getExpenseTypes.data : [];
   const [search, setSearch] = useState("");
 
-  const filteredCategories = categories.filter((cat) =>
-    cat.label.toLowerCase().includes(search.toLowerCase()),
-  );
-
-  const totalAllocated = categories.reduce((sum) => sum + 2000, 0);
-  const totalUsed = categories.reduce((sum) => sum + 1000, 0);
-  const usedPct =
-    totalAllocated > 0 ? Math.round((totalUsed / totalAllocated) * 100) : 0;
-
+  const usedPct = totalIncome > 0 ? Math.min(Math.round((totalSpent / totalIncome) * 100), 100) : 0;
   const donutData = [{ value: usedPct }, { value: 100 - usedPct }];
+
+  const colorByName = Object.fromEntries(categories.map((c) => [c.label.toLowerCase(), c.color]));
+
+  const filteredBreakdown = categoryBreakdown.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
     <div className="w-full flex flex-col bg-gradient-to-b from-[#0D0C2F] to-[#070723] rounded-2xl">
@@ -55,17 +54,13 @@ const BudgetAllocator = ({ getExpenseTypes }: Props) => {
 
         {/* Stats row */}
         <div className="w-full flex items-center p-3 rounded-lg border border-[#261F52] bg-[#0F0E37]">
-          {/* Total Allocated */}
           <div className="flex-1">
-            <p className="text-[#C089FD]/80 text-[12px] font-medium">
-              Total Allocated
-            </p>
+            <p className="text-[#C089FD]/80 text-[12px] font-medium">Total Income</p>
             <p className="text-white text-[16px] font-semibold">
-              ₱{totalAllocated.toLocaleString()}
+              ₱{totalIncome.toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </p>
           </div>
 
-          {/* Donut */}
           <div className="relative w-[64px] h-[64px] flex items-center justify-center shrink-0">
             <PieChart width={64} height={64}>
               <defs>
@@ -89,20 +84,11 @@ const BudgetAllocator = ({ getExpenseTypes }: Props) => {
                   content={({ viewBox }) => {
                     if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                       return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
+                        <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
                           <tspan
                             x={viewBox.cx}
                             y={viewBox.cy}
-                            style={{
-                              fill: "white",
-                              fontSize: "13px",
-                              fontWeight: "bold",
-                            }}
+                            style={{ fill: "white", fontSize: "13px", fontWeight: "bold" }}
                           >
                             {usedPct}%
                           </tspan>
@@ -111,20 +97,16 @@ const BudgetAllocator = ({ getExpenseTypes }: Props) => {
                     }
                   }}
                 />
-                <Cell fill="url(#donutGrad)" />{" "}
-                {/* ← direct hex/url, not CSS var */}
+                <Cell fill="url(#donutGrad)" />
                 <Cell fill="#1e1a40" />
               </Pie>
             </PieChart>
           </div>
 
-          {/* Total Used */}
           <div className="flex-1 text-right">
-            <p className="text-[#C089FD]/80 text-[12px] font-medium">
-              Total Used
-            </p>
+            <p className="text-[#C089FD]/80 text-[12px] font-medium">Total Spent</p>
             <p className="text-white text-[16px] font-semibold">
-              ₱{totalUsed.toLocaleString()}
+              ₱{totalSpent.toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </p>
           </div>
         </div>
@@ -141,68 +123,51 @@ const BudgetAllocator = ({ getExpenseTypes }: Props) => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-
           <Button
             variant="secondary"
             className="h-11 bg-[#0A0A2A] border border-[#2d2760] cursor-pointer hover:bg-[#9889dd]/60"
           >
             <Funnel color="#FFFFFF" size={16} />
-            <span className="text-sm whitespace-nowrap text-white/80 mr-4">
-              All
-            </span>
+            <span className="text-sm whitespace-nowrap text-white/80 mr-4">All</span>
             <ChevronDown color="#FFFFFF" size={12} />
           </Button>
         </div>
 
         {/* Categories list */}
         <div className="flex flex-col gap-2 overflow-y-auto">
-          {filteredCategories.length === 0 ? (
+          {filteredBreakdown.length === 0 ? (
             <p className="text-white/40 text-sm text-center py-6">
-              No categories found
+              {categoryBreakdown.length === 0 ? "No expenses recorded this month" : "No categories found"}
             </p>
           ) : (
-            filteredCategories.map((cat) => {
-              const allocated = 2000;
-              const used = 1000;
-              const pct = Math.round((used / allocated) * 100);
+            filteredBreakdown.map((item) => {
+              const color = colorByName[item.name.toLowerCase()] ?? "#B67DF1";
+              const pct = totalSpent > 0 ? Math.round((item.spent / totalSpent) * 100) : 0;
               return (
                 <div
-                  key={cat.id}
+                  key={item.name}
                   className="flex items-center gap-3 p-3 rounded-lg border border-[#261F52] bg-[#0F0E37]"
                 >
-                  <div
-                    className="w-3 h-3 rounded-full shrink-0"
-                    style={{ backgroundColor: cat.color }}
-                  />
-                  <span className="flex-1 text-white text-sm font-medium truncate">
-                    {cat.label}
-                  </span>
+                  <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                  <span className="flex-1 text-white text-sm font-medium truncate">{item.name}</span>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <p className="text-[#C089FD]/60 text-[10px]">Allocated</p>
+                      <p className="text-[#C089FD]/60 text-[10px]">Spent</p>
                       <p className="text-white text-xs font-semibold">
-                        ₱{allocated.toLocaleString()}
+                        ₱{item.spent.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[#C089FD]/60 text-[10px]">Used</p>
-                      <p className="text-white text-xs font-semibold">
-                        ₱{used.toLocaleString()}
-                      </p>
+                      <p className="text-[#C089FD]/60 text-[10px]">% of Total</p>
+                      <p className="text-white text-xs font-semibold">{pct}%</p>
                     </div>
                     <div className="w-16">
                       <div className="w-full h-1.5 rounded-full bg-[#1e1a40] overflow-hidden">
                         <div
                           className="h-full rounded-full transition-all"
-                          style={{
-                            width: `${pct}%`,
-                            backgroundColor: cat.color,
-                          }}
+                          style={{ width: `${pct}%`, backgroundColor: color }}
                         />
                       </div>
-                      <p className="text-white/40 text-[10px] text-right mt-0.5">
-                        {pct}%
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -211,7 +176,6 @@ const BudgetAllocator = ({ getExpenseTypes }: Props) => {
           )}
         </div>
 
-        {/* Error state */}
         {!getExpenseTypes.success && (
           <p className="text-red-400 text-sm">{getExpenseTypes.error}</p>
         )}

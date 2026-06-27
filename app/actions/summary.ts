@@ -2,6 +2,11 @@
 
 import { createClient } from "@/lib/supabase/server";
 
+export type CategorySpend = {
+  name: string;
+  spent: number;
+};
+
 export type SummaryData = {
   monthlySalary: number;
   totalSpent: number;
@@ -9,6 +14,7 @@ export type SummaryData = {
   savings: number;
   savingsLastMonth: number;
   remainingBalance: number;
+  categoryBreakdown: CategorySpend[];
 };
 
 export type GetSummaryResult =
@@ -33,7 +39,7 @@ function dateRange(year: number, month: number) {
   };
 }
 
-export async function getSummary(): Promise<GetSummaryResult> {
+export async function getSummary(year: number, month: number): Promise<GetSummaryResult> {
   const supabase = await createClient();
 
   const {
@@ -45,10 +51,9 @@ export async function getSummary(): Promise<GetSummaryResult> {
     return { success: false, error: "Unauthorized: Not authenticated." };
   }
 
-  const now = new Date();
-  const thisMonth = dateRange(now.getFullYear(), now.getMonth() + 1);
-  const prevYear = now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear();
-  const prevMonth = now.getMonth() === 0 ? 12 : now.getMonth();
+  const thisMonth = dateRange(year, month);
+  const prevYear = month === 1 ? year - 1 : year;
+  const prevMonth = month === 1 ? 12 : month - 1;
   const lastMonth = dateRange(prevYear, prevMonth);
 
   const [
@@ -83,25 +88,28 @@ export async function getSummary(): Promise<GetSummaryResult> {
       .lte("expense_date", lastMonth.end),
   ]);
 
-  const thisExpenseRows = (thisExpenses ?? []) as unknown as RawExpenseRow[];
-  const lastExpenseRows = (lastExpenses ?? []) as unknown as RawExpenseRow[];
+  const thisRows = (thisExpenses ?? []) as unknown as RawExpenseRow[];
+  const lastRows = (lastExpenses ?? []) as unknown as RawExpenseRow[];
 
   const monthlySalary = sum(thisIncome ?? []);
-  const totalSpent = sum(thisExpenseRows);
-  const totalSpentLastMonth = sum(lastExpenseRows);
+  const totalSpent = sum(thisRows);
+  const totalSpentLastMonth = sum(lastRows);
 
   const savings = sum(
-    thisExpenseRows.filter((r) =>
-      r.expense_types?.name?.toLowerCase().includes("savings"),
-    ),
+    thisRows.filter((r) => r.expense_types?.name?.toLowerCase().includes("savings")),
   );
   const savingsLastMonth = sum(
-    lastExpenseRows.filter((r) =>
-      r.expense_types?.name?.toLowerCase().includes("savings"),
-    ),
+    lastRows.filter((r) => r.expense_types?.name?.toLowerCase().includes("savings")),
   );
 
-  const remainingBalance = monthlySalary - totalSpent;
+  const categoryBreakdown = Object.values(
+    thisRows.reduce<Record<string, CategorySpend>>((acc, row) => {
+      const name = row.expense_types?.name ?? "Unknown";
+      if (!acc[name]) acc[name] = { name, spent: 0 };
+      acc[name].spent += Number(row.amount);
+      return acc;
+    }, {}),
+  ).sort((a, b) => b.spent - a.spent);
 
   return {
     success: true,
@@ -111,7 +119,8 @@ export async function getSummary(): Promise<GetSummaryResult> {
       totalSpentLastMonth,
       savings,
       savingsLastMonth,
-      remainingBalance,
+      remainingBalance: monthlySalary - totalSpent,
+      categoryBreakdown,
     },
   };
 }

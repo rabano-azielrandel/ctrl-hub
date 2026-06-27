@@ -7,13 +7,13 @@ import BudgetAllocator from "@/components/sections/expense/budgetAllocator";
 import DataTable from "@/components/ui/DataTable";
 import Header from "@/components/sections/expense/Header";
 import AddExpenseModal from "@/components/forms/AddExpenseModal";
+import AddIncomeModal from "@/components/forms/AddIncomeModal";
 import { Column, RowData } from "@/types/DataTable";
 import { GetExpenseTypesResult } from "@/types/ExpenseTracker";
 import { GetIncomeTypesResult } from "@/types/IncomeTracker";
 import { createExpense } from "@/app/actions/expense";
 import { createIncome } from "@/app/actions/income";
-import AddIncomeModal from "@/components/forms/AddIncomeModal";
-import { GetSummaryResult } from "@/app/actions/summary";
+import { getSummary, GetSummaryResult, SummaryData } from "@/app/actions/summary";
 
 interface Props {
   col: Column[];
@@ -35,8 +35,22 @@ function fmtChange(current: number, last: number) {
 }
 
 const ClientWrapper = ({ col, row, expenseTypes, incomeTypes, summary }: Props) => {
+  const now = new Date();
+
   const [addExpense, setAddExpense] = useState(false);
   const [addIncome, setAddIncome] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState<Date>(
+    new Date(now.getFullYear(), now.getMonth(), 1),
+  );
+  const [summaryData, setSummaryData] = useState<SummaryData | null>(
+    summary.success ? summary.data : null,
+  );
+
+  const handleMonthChange = async (month: Date) => {
+    setSelectedMonth(month);
+    const result = await getSummary(month.getFullYear(), month.getMonth() + 1);
+    if (result.success) setSummaryData(result.data);
+  };
 
   const categories = expenseTypes.success ? expenseTypes.data : [];
   const incomeCategories = incomeTypes.success ? incomeTypes.data : [];
@@ -57,47 +71,50 @@ const ClientWrapper = ({ col, row, expenseTypes, incomeTypes, summary }: Props) 
     };
   });
 
+  const cardDynamic = summaryData
+    ? [
+        { total: fmtPeso(summaryData.monthlySalary), desc: "" },
+        { total: fmtPeso(summaryData.totalSpent), desc: fmtChange(summaryData.totalSpent, summaryData.totalSpentLastMonth) },
+        { total: fmtPeso(summaryData.savings), desc: fmtChange(summaryData.savings, summaryData.savingsLastMonth) },
+        { total: fmtPeso(summaryData.remainingBalance), desc: "This month" },
+      ]
+    : null;
+
   return (
     <div className="relative h-screen flex flex-col gap-4 p-4 bg-[#100D17]">
-      {/* Header */}
       <div className="w-full">
         <Header
           addExpense={addExpense}
           setAddExpense={setAddExpense}
           addIncome={addIncome}
           setAddIncome={setAddIncome}
+          selectedMonth={selectedMonth}
+          onMonthChange={handleMonthChange}
         />
       </div>
-      {/* Summary */}
-      <div className="flex justify-between items-center">
-        {DefaultCards.map((card, index) => {
-          const s = summary.success ? summary.data : null;
-          const dynamic = s
-            ? [
-                { total: fmtPeso(s.monthlySalary), desc: "" },
-                { total: fmtPeso(s.totalSpent), desc: fmtChange(s.totalSpent, s.totalSpentLastMonth) },
-                { total: fmtPeso(s.savings), desc: fmtChange(s.savings, s.savingsLastMonth) },
-                { total: fmtPeso(s.remainingBalance), desc: "This month" },
-              ][index]
-            : null;
 
-          return (
-            <SummaryCards
-              key={index}
-              label={card.label}
-              color={card.color}
-              icon={card.icon}
-              total={dynamic?.total ?? card.total}
-              desc={dynamic?.desc ?? card.desc}
-              index={index}
-            />
-          );
-        })}
+      <div className="flex justify-between items-center">
+        {DefaultCards.map((card, index) => (
+          <SummaryCards
+            key={index}
+            label={card.label}
+            color={card.color}
+            icon={card.icon}
+            total={cardDynamic?.[index]?.total ?? card.total}
+            desc={cardDynamic?.[index]?.desc ?? card.desc}
+            index={index}
+          />
+        ))}
       </div>
 
       <div className="h-[85%] flex gap-4">
         <div className="w-full">
-          <BudgetAllocator getExpenseTypes={expenseTypes} />
+          <BudgetAllocator
+            getExpenseTypes={expenseTypes}
+            categoryBreakdown={summaryData?.categoryBreakdown ?? []}
+            totalSpent={summaryData?.totalSpent ?? 0}
+            totalIncome={summaryData?.monthlySalary ?? 0}
+          />
         </div>
         <div className="w-full rounded-lg overflow-hidden">
           <DataTable columns={enrichedColumns} rows={row} title="Expenses" />
