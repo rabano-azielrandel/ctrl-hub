@@ -8,9 +8,9 @@ import {
   addRow,
 } from "@/app/actions/projectActions";
 
-const projectPanelData = await getProjects();
+export default async function Projects() {
+  const projectPanelData = await getProjects();
 
-export default function Projects() {
   return (
     <div className="flex h-full overflow-hidden">
       <Main

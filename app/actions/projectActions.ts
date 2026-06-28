@@ -4,10 +4,12 @@ import { createClient } from "@/lib/supabase/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { FieldDefinition, CreateTableResult } from "@/types/TableFields";
 
-const adminClient = createAdminClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_SERVICE_ROLE_KEY!,
-);
+function getAdminClient() {
+  return createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_SERVICE_ROLE_KEY!,
+  );
+}
 
 export async function getProjects() {
   const supabase = await createClient();
@@ -89,7 +91,7 @@ export async function createTable(
     }
   }
 
-  const { error: rpcError } = await adminClient.rpc("create_custom_table", {
+  const { error: rpcError } = await getAdminClient().rpc("create_custom_table", {
     table_name: tableName,
     requesting_user_id: user.id,
     fields,
@@ -145,7 +147,7 @@ export async function addRow(
   };
 
   // 5. Insert into the active table
-  const { error: insertError } = await adminClient
+  const { error: insertError } = await getAdminClient()
     .from(tableName)
     .insert(payload);
 
