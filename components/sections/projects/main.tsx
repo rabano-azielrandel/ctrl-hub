@@ -78,7 +78,7 @@ export default function Main({
   };
 
   return (
-    <div className="relative w-full flex flex-col items-center gap-2 bg-[#140C2A]">
+    <div className="relative w-full h-full flex flex-col items-center gap-2 bg-[#140C2A] overflow-hidden">
       <div className="w-full min-h-20 flex flex-wrap justify-between items-center gap-2 p-4">
         {/* Tag and Dropdown */}
         <div className="flex flex-wrap gap-4">
@@ -162,7 +162,7 @@ export default function Main({
           </Button>
         </div>
       </div>
-      <div className="p-4 max-w-[1480px]">
+      <div className="p-4 max-w-[1480px] h-full">
         <DataTable title={activeDropDown} columns={columns} rows={rows} />
       </div>
 

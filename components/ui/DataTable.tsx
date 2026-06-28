@@ -18,9 +18,9 @@ function formatValue(value: unknown) {
 
 export default function DataTable({ title, columns, rows }: DataTableProps) {
   return (
-    <div className="w-full h-full max-h-[400px] sm:max-h-[650px] rounded-2xl border border-violet-900/40 bg-gradient-to-b from-[#0b0618] to-[#070312] text-white shadow-[0_0_40px_rgba(139,92,246,0.08)]">
+    <div className="w-full h-full max-h-[400px] sm:max-h-[650px] flex flex-col overflow-hidden rounded-2xl border border-violet-900/40 bg-gradient-to-b from-[#0b0618] to-[#070312] text-white shadow-[0_0_40px_rgba(139,92,246,0.08)]">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 pt-5 pb-4">
+      <div className="flex items-center justify-between px-6 pt-5 pb-4 shrink-0">
         <div className="flex items-center gap-3">
           <h2 className="text-lg font-semibold tracking-wide">{title}</h2>
 
@@ -31,7 +31,7 @@ export default function DataTable({ title, columns, rows }: DataTableProps) {
       </div>
 
       {/* Table */}
-      <div className="px-6 pb-6">
+      <div className="flex-1 overflow-y-auto px-6 pb-6">
         <div className="w-full overflow-x-auto rounded-xl border border-violet-900/30">
           <table className="min-w-[900px] w-full border-collapse">
             {/* HEADER */}
